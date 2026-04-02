@@ -1,8 +1,6 @@
 package com.example.HouseGoods.products;
 
-import com.example.HouseGoods.products.entity.Attribute;
-import com.example.HouseGoods.products.entity.Brand;
-import com.example.HouseGoods.products.entity.Category;
+import com.example.HouseGoods.products.entity.*;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,6 +30,9 @@ public class Product {
     @Column(name = "sale_price")
     private Double salePrice;
 
+    @Column(name = "count")
+    private Integer count;
+
     @Column(name = "weight_kg")
     private Double weight;
 
@@ -52,11 +53,6 @@ public class Product {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_attributes",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "attribute_id")
-    )
-    private List<Attribute> attributes;
+    @OneToMany(mappedBy = "product")
+    private List<ProductAttributeValue> productAttributeValues;
 }
