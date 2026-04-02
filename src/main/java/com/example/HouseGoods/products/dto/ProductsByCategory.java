@@ -1,6 +1,5 @@
 package com.example.HouseGoods.products.dto;
 
-import com.example.HouseGoods.products.Product;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +13,5 @@ import java.util.List;
 @Builder
 public class ProductsByCategory {
     private String categoryName;
-    private List<Product> products;
+    private List<ProductResponse> products;
 }
