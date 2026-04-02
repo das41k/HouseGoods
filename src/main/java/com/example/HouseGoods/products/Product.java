@@ -32,6 +32,9 @@ public class Product {
     @Column(name = "sale_price")
     private Double salePrice;
 
+    @Column(name = "count")
+    private Integer count;
+
     @Column(name = "weight_kg")
     private Double weight;
 
