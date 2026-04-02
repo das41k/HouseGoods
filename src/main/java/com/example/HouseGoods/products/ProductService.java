@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +34,13 @@ public class ProductService {
         productsByCategory.setProducts(productResponseList);
         log.info("Завершение ProductService: getProductsByCategory(String categoryName)");
         return productsByCategory;
+    }
+
+    public ProductResponse getProductBySku(String sku) {
+        log.info("Работа ProductService: getProductBySku(String sku)");
+        Product product = productRepository.findBySku(sku)
+                        .orElseThrow(() -> new ProductNotFoundException("Данный товар не был найден!"));
+        log.info("Завершение ProductService: getProductBySku(String sku)");
+        return productMapper.mappingByProductResponse(product);
     }
 }
