@@ -26,8 +26,7 @@ public class ProductService {
         log.info("Работа ProductService: getProductsByCategory(String categoryName)");
         Category category = categoryRepository.findByTitle(categoryName)
                 .orElseThrow(() -> new CategoryNotFoundException("Категория с данным именем не была найдена!"));
-        List<Product> products = productRepository.findByCategory(category)
-                .orElseThrow(() -> new ProductNotFoundException("Товары для данной категории не были найдены"));
+        List<Product> products = productRepository.findByCategory(category);
         List<ProductResponse> productResponseList = products.stream()
                 .map(productMapper::mappingByProductResponse)
                 .toList();
