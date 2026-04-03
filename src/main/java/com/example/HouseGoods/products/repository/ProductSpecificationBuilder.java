@@ -38,12 +38,12 @@ public class ProductSpecificationBuilder {
 
             // 3. Категория
             if (isNotBlank(filters.getCategory())) {
-                predicates.add(cb.equal(root.get("category"), filters.getCategory().trim()));
+                predicates.add(cb.equal(root.get("category").get("title"), filters.getCategory().trim()));
             }
 
             // 4. Бренд
             if (isNotBlank(filters.getBrand())) {
-                predicates.add(cb.equal(root.get("brand"), filters.getBrand().trim()));
+                predicates.add(cb.equal(root.get("brand").get("name"), filters.getBrand().trim()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
@@ -51,21 +51,29 @@ public class ProductSpecificationBuilder {
     }
 
     public Specification<Product> buildAttributesSpecification(Map<String, String> attributes) {
-        Specification<Product> spec = (Specification<Product>) null; // Начальная пустая спецификация
-
+        // Если нет атрибутов, возвращаем null (означает "нет фильтра")
         if (attributes == null || attributes.isEmpty()) {
-            return spec;
+            return null;
         }
+
+        Specification<Product> spec = null;
 
         for (Map.Entry<String, String> entry : attributes.entrySet()) {
             String code = entry.getKey();
             String value = entry.getValue();
 
-            // Добавляем условие AND для каждого атрибута
-            spec = spec.and(hasAttribute(code, value));
+            if (isNotBlank(code) && isNotBlank(value)) {
+                if (spec == null) {
+                    // Первый атрибут - просто присваиваем
+                    spec = hasAttribute(code, value);
+                } else {
+                    // Последующие - добавляем через and
+                    spec = spec.and(hasAttribute(code, value));
+                }
+            }
         }
 
-        return spec;
+        return spec;  // может быть null, если не было валидных атрибутов
     }
 
     private Specification<Product> hasAttribute(String attributeCode, String attributeValue) {

@@ -53,7 +53,13 @@ public class ProductService {
 
         Specification<Product> spec = specificationBuilder.buildBaseSpecification(filters);
         Specification<Product> attributeSpec = specificationBuilder.buildAttributesSpecification(filters.getAttributes());
-        Specification<Product> finalSpec = spec.and(attributeSpec);
+
+        Specification<Product> finalSpec;
+        if (attributeSpec != null) {
+            finalSpec = spec.and(attributeSpec);
+        } else {
+            finalSpec = spec;
+        }
 
         List<Product> products = productRepository.findAll(finalSpec);
         log.info("Найдено товаров: {}", products.size());
