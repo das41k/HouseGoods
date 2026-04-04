@@ -1,5 +1,6 @@
-package com.example.HouseGoods.products;
+package com.example.HouseGoods.products.service;
 
+import com.example.HouseGoods.products.Product;
 import com.example.HouseGoods.products.dto.ProductFilterRequest;
 import com.example.HouseGoods.products.dto.ProductResponse;
 import com.example.HouseGoods.products.dto.ProductsByCategory;
