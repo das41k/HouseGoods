@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product,Long>,
     Optional<Product> findBySku(String sku);
     List<Product> findByBrand(Brand brand);
     List<Product> findByBrand_Country(Country country);
+    List<Product> findBySalePriceIsNotNull();
 }

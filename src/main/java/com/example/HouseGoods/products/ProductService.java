@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -93,5 +94,21 @@ public class ProductService {
         return products.stream()
                 .map(productMapper::mappingByProductResponse)
                 .toList();
+    }
+
+    public List<ProductResponse> getProductsByContainsSalePrice() {
+        log.info("Работа ProductService: getProductsByContainsSalePrice()");
+        List<Product> products = productRepository.findBySalePriceIsNotNull();
+        Comparator<Product> comparator = this::sortedByPercentSales;
+        products.sort(comparator.reversed());
+        return  products.stream()
+                .map(productMapper::mappingByProductResponse)
+                .toList();
+    }
+
+    private int sortedByPercentSales(Product pr1, Product pr2) {
+        double pr1Percent = (pr1.getBasePrice() - pr1.getSalePrice()) / pr1.getBasePrice() * 100;
+        double pr2Percent = (pr2.getBasePrice() - pr2.getSalePrice()) / pr2.getBasePrice() * 100;
+        return Double.compare(pr1Percent, pr2Percent);
     }
 }
