@@ -20,13 +20,19 @@ public class ProductController {
 
     @GetMapping("/{sku}")
     public ResponseEntity<ProductResponse> getProductBySku(@PathVariable String sku) {
-        log.debug("GET /products/sku : {}", sku);
+        log.debug("GET /api/products/sku : {}", sku);
         return ResponseEntity.ok(productService.getProductBySku(sku));
     }
 
-    @PostMapping("/filters")
+    @GetMapping("/filters")
     public ResponseEntity<List<ProductResponse>> getProductsByFilters(@RequestBody ProductFilterRequest filters) {
-        log.debug("GET /products/filters : {}", filters);
+        log.debug("GET /api/products/filters : {}", filters);
         return ResponseEntity.ok(productService.getProductsByFilters(filters));
+    }
+
+    @GetMapping("/sales")
+    public ResponseEntity<List<ProductResponse>> getProductsByStocks() {
+        log.debug("GET /api/products/sales");
+        return ResponseEntity.ok(productService.getProductsByContainsSalePrice());
     }
 }
