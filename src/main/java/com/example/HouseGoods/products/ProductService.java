@@ -3,9 +3,12 @@ package com.example.HouseGoods.products;
 import com.example.HouseGoods.products.dto.ProductFilterRequest;
 import com.example.HouseGoods.products.dto.ProductResponse;
 import com.example.HouseGoods.products.dto.ProductsByCategory;
+import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
+import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
 import com.example.HouseGoods.products.exception.ProductNotFoundException;
+import com.example.HouseGoods.products.repository.BrandRepository;
 import com.example.HouseGoods.products.repository.CategoryRepository;
 import com.example.HouseGoods.products.repository.ProductRepository;
 import com.example.HouseGoods.products.repository.ProductSpecificationBuilder;
@@ -22,6 +25,7 @@ import java.util.List;
 public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final BrandRepository brandRepository;
     private final ProductMapper productMapper;
     private final ProductSpecificationBuilder specificationBuilder;
 
@@ -69,4 +73,14 @@ public class ProductService {
                 .toList();
     }
 
+    public List<ProductResponse> getProductsByBrand(String brandName) {
+        log.info("Работа ProductService: getProductsByBrand(String brandName)");
+        Brand brand = brandRepository.findByName(brandName)
+                .orElseThrow(() -> new BrandNotFoundException("Бренд с данным именем не был найден!"));
+        List<Product> products = productRepository.findByBrand(brand);
+        log.info("Завершение ProductService: getProductsByBrand(String brandName)");
+        return products.stream()
+                .map(productMapper::mappingByProductResponse)
+                .toList();
+    }
 }
