@@ -1,5 +1,6 @@
-package com.example.HouseGoods.products;
+package com.example.HouseGoods.products.mapper;
 
+import com.example.HouseGoods.products.Product;
 import com.example.HouseGoods.products.dto.ProductResponse;
 import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
