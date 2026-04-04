@@ -33,6 +33,9 @@ public class Product {
     @Column(name = "count")
     private Integer count;
 
+    @Column(name = "image_url", length = 500)
+    private String imageURl;
+
     @Column(name = "weight_kg")
     private Double weight;
 

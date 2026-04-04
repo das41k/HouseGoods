@@ -14,4 +14,10 @@ public class Country {
 
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
+
+    @Column(name = "code", nullable = false, unique = true, length = 10)
+    private String code;
+
+    @Column(name = "image_url", length = 500)
+    private String imageURl;
 }

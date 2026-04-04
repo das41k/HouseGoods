@@ -18,4 +18,7 @@ public class Brand {
     @ManyToOne
     @JoinColumn(name = "country_id")
     private Country country;
+
+    @Column(name = "image_url", length = 500)
+    private String imageURl;
 }
