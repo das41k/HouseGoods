@@ -3,6 +3,8 @@ package com.example.HouseGoods.products.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categories")
 @Data
@@ -16,9 +18,12 @@ public class Category {
     @Column(name = "title", nullable = false, unique = true, length = 200)
     private String title;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "parent_id")
     private Category categoryParent;
+
+    @OneToMany(mappedBy = "categoryParent")
+    private List<Category> children;
 
     @Column(name = "description")
     private String description;
