@@ -1,6 +1,6 @@
 package com.example.HouseGoods.products.controller;
 
-import com.example.HouseGoods.products.ProductService;
+import com.example.HouseGoods.products.service.ProductService;
 import com.example.HouseGoods.products.dto.ProductFilterRequest;
 import com.example.HouseGoods.products.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
