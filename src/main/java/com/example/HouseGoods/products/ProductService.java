@@ -3,12 +3,14 @@ package com.example.HouseGoods.products;
 import com.example.HouseGoods.products.dto.ProductFilterRequest;
 import com.example.HouseGoods.products.dto.ProductResponse;
 import com.example.HouseGoods.products.dto.ProductsByCategory;
+import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
+import com.example.HouseGoods.products.entity.Country;
+import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
+import com.example.HouseGoods.products.exception.CountryNotFoundException;
 import com.example.HouseGoods.products.exception.ProductNotFoundException;
-import com.example.HouseGoods.products.repository.CategoryRepository;
-import com.example.HouseGoods.products.repository.ProductRepository;
-import com.example.HouseGoods.products.repository.ProductSpecificationBuilder;
+import com.example.HouseGoods.products.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
@@ -22,6 +24,8 @@ import java.util.List;
 public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
+    private final BrandRepository brandRepository;
+    private final CountryRepository countryRepository;
     private final ProductMapper productMapper;
     private final ProductSpecificationBuilder specificationBuilder;
 
@@ -69,4 +73,25 @@ public class ProductService {
                 .toList();
     }
 
+    public List<ProductResponse> getProductsByBrand(String brandName) {
+        log.info("Работа ProductService: getProductsByBrand(String brandName)");
+        Brand brand = brandRepository.findByName(brandName)
+                .orElseThrow(() -> new BrandNotFoundException("Бренд с данным именем не был найден!"));
+        List<Product> products = productRepository.findByBrand(brand);
+        log.info("Завершение ProductService: getProductsByBrand(String brandName)");
+        return products.stream()
+                .map(productMapper::mappingByProductResponse)
+                .toList();
+    }
+
+    public List<ProductResponse> getProductsByCountry(String countryName) {
+        log.info("Работа ProductService: getProductsByCountry(String countryName)");
+        Country country = countryRepository.findByName(countryName)
+                        .orElseThrow(() -> new CountryNotFoundException("Страна с данным названием не была найдена!"));
+        List<Product> products = productRepository.findByBrand_Country(country);
+        log.info("Завершение ProductService: getProductsByCountry(String countryName)");
+        return products.stream()
+                .map(productMapper::mappingByProductResponse)
+                .toList();
+    }
 }
