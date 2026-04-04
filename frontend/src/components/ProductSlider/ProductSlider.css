@@ -1,0 +1,125 @@
+.products-slider {
+    margin-top: 60px;
+    padding-top: 32px;
+    border-top: 1px solid var(--gray-border);
+}
+
+.products-slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.products-slider-header h2 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--gray-dark);
+    margin-bottom: 6px;
+}
+
+.products-slider-header p {
+    font-size: 14px;
+    color: var(--gray-text);
+}
+
+.products-slider-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.slider-nav-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--gray-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--gray-dark);
+}
+
+.slider-nav-btn:hover:not(:disabled) {
+    background: var(--green);
+    border-color: var(--green);
+    color: var(--white);
+}
+
+.slider-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.slider-nav-btn.prev svg {
+    transform: rotate(-90deg);
+}
+
+.slider-nav-btn.next svg {
+    transform: rotate(90deg);
+}
+
+.slider-counter {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-text);
+    min-width: 50px;
+    text-align: center;
+}
+
+.products-slider-track {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.products-slide {
+    flex: 1;
+    min-width: 0;
+}
+
+.products-slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+@media (max-width: 1200px) {
+    .products-slider-header h2 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .products-slider {
+        margin-top: 40px;
+        padding-top: 24px;
+    }
+
+    .products-slider-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .products-slider-header h2 {
+        font-size: 20px;
+    }
+
+    .products-slider-nav {
+        align-self: center;
+    }
+
+    .slider-nav-btn {
+        width: 38px;
+        height: 38px;
+    }
+
+    .products-slider-track {
+        gap: 16px;
+    }
+}
