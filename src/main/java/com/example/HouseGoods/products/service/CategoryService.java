@@ -25,6 +25,13 @@ public class CategoryService {
                 .toList();
     }
 
+    public List<CategoryResponse> getAllCategories() {
+        log.info("Работа с CategoryService: getAllCategories()");
+        return categoryRepository.findAll()
+                    .stream().map(categoryMapper::mappingToCategoryResponse)
+                    .toList();
+    }
+
     public List<CategoryResponse> getChildrenCategories(Long parentId) {
         log.info("Работа с CategoryService: getChildrenCategories(Long parentId)");
         Category parent = categoryRepository.findById(parentId)

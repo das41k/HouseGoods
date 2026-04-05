@@ -47,6 +47,13 @@ public class ProductService {
         return productsByCategory;
     }
 
+    public List<ProductResponse> getAllProducts() {
+        log.info("Работа ProductService: getAllProducts()");
+        return productRepository.findAll().stream()
+                .map(productMapper::mappingByProductResponse)
+                .toList();
+    }
+
     public ProductResponse getProductBySku(String sku) {
         log.info("Работа ProductService: getProductBySku(String sku)");
         Product product = productRepository.findBySku(sku)

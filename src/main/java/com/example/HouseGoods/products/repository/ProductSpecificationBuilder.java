@@ -46,6 +46,10 @@ public class ProductSpecificationBuilder {
                 predicates.add(cb.equal(root.get("brand").get("name"), filters.getBrand().trim()));
             }
 
+            // 5. Страна
+            if (isNotBlank(filters.getCountry())) {
+                predicates.add(cb.equal(root.get("brand").get("country").get("name"), filters.getCountry().trim()));
+            }
             return cb.and(predicates.toArray(new Predicate[0]));
         };
     }
