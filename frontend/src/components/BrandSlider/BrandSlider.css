@@ -1,60 +1,36 @@
 .brand-slider {
-    margin-top: 60px;
-    padding-top: 32px;
-    border-top: 1px solid var(--gray-border);
-}
-
-.brand-slider-header {
-    text-align: center;
-    margin-bottom: 32px;
-}
-
-.brand-slider-header h2 {
-    font-size: 26px;
-    font-weight: 600;
-    color: var(--gray-dark);
-    margin-bottom: 8px;
-}
-
-.brand-slider-header p {
-    font-size: 15px;
-    color: var(--gray-text);
+    margin-top: 0;
 }
 
 .brand-slider-container {
-    position: relative;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
+    gap: 16px;
 }
 
-.slider-track {
+.brand-slider-track {
     display: flex;
-    justify-content: center;
-    gap: 24px;
+    gap: 20px;
     flex: 1;
-    max-width: 1000px;
-    margin: 0 auto;
 }
 
-.slider-slide {
+.brand-slide {
     flex: 1;
     min-width: 0;
 }
 
 .slider-nav {
-    width: 48px;
-    height: 48px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: var(--white);
-    border: 1px solid var(--gray-border);
+    border: 1px solid var(--gray-200);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
-    color: var(--gray-dark);
+    transition: all 0.2s;
+    color: var(--gray-600);
     flex-shrink: 0;
 }
 
@@ -80,15 +56,15 @@
 .slider-dots {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-top: 32px;
+    gap: 8px;
+    margin-top: 20px;
 }
 
 .dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     border-radius: 50%;
-    background: var(--gray-border);
+    background: var(--gray-300);
     border: none;
     cursor: pointer;
     transition: all 0.2s;
@@ -96,51 +72,22 @@
 }
 
 .dot.active {
-    width: 28px;
-    border-radius: 4px;
+    width: 20px;
+    border-radius: 3px;
     background: var(--green);
 }
 
-/* Адаптив */
-@media (max-width: 900px) {
-    .slider-track {
-        gap: 20px;
-    }
-
-    .slider-nav {
-        width: 40px;
-        height: 40px;
-    }
-}
-
 @media (max-width: 768px) {
-    .brand-slider {
-        margin-top: 40px;
-        padding-top: 24px;
+    .brand-slider-container {
+        gap: 12px;
     }
 
-    .brand-slider-header h2 {
-        font-size: 22px;
+    .brand-slider-track {
+        gap: 12px;
     }
 
-    .slider-nav {
-        width: 36px;
-        height: 36px;
-    }
-
-    .slider-track {
-        gap: 16px;
-    }
-}
-
-@media (max-width: 640px) {
     .slider-nav {
         width: 32px;
         height: 32px;
-    }
-
-    .slider-nav svg {
-        width: 18px;
-        height: 18px;
     }
 }

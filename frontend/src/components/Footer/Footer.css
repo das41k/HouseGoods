@@ -1,0 +1,255 @@
+.footer {
+    background: #1a1a1a;
+    color: #ffffff;
+    margin-top: 60px;
+}
+
+.footer-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+}
+
+/* Логотип */
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.footer-logo-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.footer-logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, #00a046 0%, #00c853 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.footer-description {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #a3a3a3;
+}
+
+/* Заголовки секций */
+.footer-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+.footer-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: #00a046;
+    border-radius: 2px;
+}
+
+/* Ссылки */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 12px;
+}
+
+.footer-link {
+    background: none;
+    border: none;
+    color: #a3a3a3;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+    text-align: left;
+}
+
+.footer-link:hover {
+    color: #00a046;
+    transform: translateX(4px);
+}
+
+/* Email ссылка */
+.footer-email {
+    color: #a3a3a3;
+    text-decoration: none;
+    font-size: 14px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-email:hover {
+    color: #00a046;
+    transform: translateX(4px);
+}
+
+/* Адрес */
+.footer-address {
+    color: #a3a3a3;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Соцсети */
+.footer-social {
+    display: flex;
+    gap: 16px;
+}
+
+.social-link {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    color: #ffffff;
+}
+
+.social-link.vk {
+    background: #0077ff;
+}
+
+.social-link.telegram {
+    background: #0088cc;
+}
+
+.social-link:hover {
+    transform: translateY(-4px);
+    filter: brightness(1.1);
+}
+
+/* Нижняя часть */
+.footer-bottom {
+    border-top: 1px solid #2a2a2a;
+    padding: 24px 24px 32px;
+}
+
+.footer-bottom-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.footer-bottom-content p {
+    color: #a3a3a3;
+    font-size: 13px;
+    margin: 8px 0;
+}
+
+.footer-bottom-content p:first-child {
+    margin-top: 0;
+}
+
+.footer-bottom-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Адаптив */
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer {
+        margin-top: 40px;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 32px 20px 24px;
+    }
+
+    .footer-logo-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .footer-logo-text {
+        font-size: 18px;
+    }
+
+    .footer-title {
+        font-size: 16px;
+        margin-bottom: 16px;
+    }
+
+    .footer-bottom {
+        padding: 20px 16px 24px;
+    }
+
+    .footer-bottom-content p {
+        font-size: 11px;
+    }
+
+    .social-link {
+        width: 40px;
+        height: 40px;
+    }
+
+    .social-link svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 380px) {
+    .footer-container {
+        padding: 24px 16px 20px;
+    }
+
+    .footer-logo-img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .footer-logo-text {
+        font-size: 16px;
+    }
+
+    .footer-description {
+        font-size: 12px;
+    }
+
+    .footer-email {
+        font-size: 12px;
+    }
+
+    .footer-address {
+        font-size: 12px;
+    }
+
+    .social-link {
+        width: 36px;
+        height: 36px;
+    }
+}

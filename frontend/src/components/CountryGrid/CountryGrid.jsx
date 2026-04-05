@@ -13,12 +13,7 @@ function CountryGrid({ countries, onCountryClick }) {
     }
 
     return (
-        <div className={`countries-section ${isVisible ? 'visible' : ''}`}>
-            <div className="countries-header">
-                <h2>Страны производители</h2>
-                <p>Товары со всего мира</p>
-            </div>
-
+        <div className={`countries-grid-container ${isVisible ? 'visible' : ''}`}>
             <div className="countries-grid">
                 {countries.map((country, idx) => (
                     <div

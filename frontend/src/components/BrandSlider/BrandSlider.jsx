@@ -19,46 +19,27 @@ function BrandSlider({ brands, onBrandClick }) {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
+    if (!brands || brands.length === 0) return null
+
     const maxIndex = Math.max(0, brands.length - itemsToShow)
     const visibleBrands = brands.slice(currentIndex, currentIndex + itemsToShow)
 
-    const nextSlide = () => {
-        if (currentIndex < maxIndex) {
-            setCurrentIndex(currentIndex + 1)
-        }
-    }
-
-    const prevSlide = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1)
-        }
-    }
-
-    if (!brands || brands.length === 0) {
-        return null
-    }
-
     return (
         <div className="brand-slider">
-            <div className="brand-slider-header">
-                <h2>Популярные бренды</h2>
-                <p>Ведущие мировые производители</p>
-            </div>
-
             <div className="brand-slider-container">
                 <button
                     className="slider-nav prev"
-                    onClick={prevSlide}
+                    onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
                     disabled={currentIndex === 0}
                 >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                     </svg>
                 </button>
 
-                <div className="slider-track">
+                <div className="brand-slider-track">
                     {visibleBrands.map((brand, idx) => (
-                        <div key={idx} className="slider-slide">
+                        <div key={idx} className="brand-slide">
                             <BrandCard brand={brand} onClick={onBrandClick} />
                         </div>
                     ))}
@@ -66,10 +47,10 @@ function BrandSlider({ brands, onBrandClick }) {
 
                 <button
                     className="slider-nav next"
-                    onClick={nextSlide}
+                    onClick={() => setCurrentIndex(Math.min(maxIndex, currentIndex + 1))}
                     disabled={currentIndex === maxIndex}
                 >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                         <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                     </svg>
                 </button>
