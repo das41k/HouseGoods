@@ -1,0 +1,77 @@
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.icon-btn {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray-700);
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background: var(--gray-100);
+    color: var(--green);
+}
+
+.icon-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: var(--green);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+}
+
+@media (max-width: 768px) {
+    .header-icons {
+        gap: 12px;
+    }
+
+    .icon-btn {
+        padding: 6px;
+    }
+
+    .icon-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-icons {
+        gap: 4px;
+    }
+
+    .icon-btn {
+        padding: 4px;
+    }
+
+    .icon-btn svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .icon-badge {
+        min-width: 14px;
+        height: 14px;
+        font-size: 8px;
+    }
+}
