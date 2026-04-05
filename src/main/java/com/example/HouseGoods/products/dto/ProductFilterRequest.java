@@ -13,6 +13,7 @@ public class ProductFilterRequest {
     private Double maxPrice;
     private String brand;
     private String category;
+    private String country;
 
     private Boolean isSale;
     private Map<String, String> attributes;

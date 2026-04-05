@@ -1,21 +1,43 @@
 import React, { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import './MobileMenu.css'
 
 function MobileMenu({ isOpen, onClose }) {
-    const menuItems = [
-        { name: 'Каталог', id: 'catalog-section' },
-        { name: 'Скидки', id: 'sales-section' },
-        { name: 'Бренды', id: 'brands-section' },
-        { name: 'Страны', id: 'countries-section' }
-    ]
+    const navigate = useNavigate()
+    const location = useLocation()
 
-    const handleLinkClick = (id) => {
+    const handleScrollToSection = (sectionId) => {
         onClose()
-        const element = document.getElementById(id)
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        // Если мы не на главной странице
+        if (location.pathname !== '/') {
+            navigate('/')
+            // Ждем загрузки главной страницы и скроллим
+            setTimeout(() => {
+                const element = document.getElementById(sectionId)
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+            }, 100)
+        } else {
+            const element = document.getElementById(sectionId)
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
         }
     }
+
+    const handleCatalogClick = () => {
+        onClose()
+        navigate('/catalog?type=all')
+    }
+
+    const menuItems = [
+        { name: 'Категории', id: 'catalog-section' },
+        { name: 'Скидки', id: 'sales-section' },
+        { name: 'Бренды', id: 'brands-section' },
+        { name: 'Страны', id: 'countries-section' },
+        { name: 'Каталог', isCatalog: true }
+    ]
 
     useEffect(() => {
         if (isOpen) {
@@ -38,13 +60,23 @@ function MobileMenu({ isOpen, onClose }) {
                     <button onClick={onClose}>✕</button>
                 </div>
                 {menuItems.map(item => (
-                    <button
-                        key={item.name}
-                        className="mobile-menu-link"
-                        onClick={() => handleLinkClick(item.id)}
-                    >
-                        {item.name}
-                    </button>
+                    item.isCatalog ? (
+                        <button
+                            key={item.name}
+                            className="mobile-menu-link"
+                            onClick={handleCatalogClick}
+                        >
+                            {item.name}
+                        </button>
+                    ) : (
+                        <button
+                            key={item.name}
+                            className="mobile-menu-link"
+                            onClick={() => handleScrollToSection(item.id)}
+                        >
+                            {item.name}
+                        </button>
+                    )
                 ))}
             </div>
         </div>

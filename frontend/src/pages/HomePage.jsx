@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import CategoryCard from '../components/CategoryCard/CategoryCard'
 import BrandSlider from '../components/BrandSlider/BrandSlider'
 import CountryGrid from '../components/CountryGrid/CountryGrid'
@@ -6,6 +7,7 @@ import ProductSlider from '../components/ProductSlider/ProductSlider'
 import './Pages.css'
 
 function HomePage() {
+    const navigate = useNavigate()
     const [categories, setCategories] = useState([])
     const [brands, setBrands] = useState([])
     const [countries, setCountries] = useState([])
@@ -40,7 +42,7 @@ function HomePage() {
 
     const loadParentCategories = async () => {
         try {
-            const response = await fetch('/house-goods/api/categories')
+            const response = await fetch('/house-goods/api/categories/parents')
             const data = await response.json()
             setCategories(data)
         } catch (error) {
@@ -106,24 +108,28 @@ function HomePage() {
         setHistory(history.slice(0, -1))
     }
 
+    // Клик по категории
     const handleCategoryClick = (category) => {
         if (category.hasChildren) {
             loadChildrenCategories(category.id, category.title, categories)
         } else {
-            alert(`Товары категории: ${category.title}`)
+            navigate(`/catalog?type=category&name=${encodeURIComponent(category.title)}`)
         }
     }
 
+    // Клик по бренду
     const handleBrandClick = (brand) => {
-        alert(`Товары бренда: ${brand.name}`)
+        navigate(`/catalog?type=brand&name=${encodeURIComponent(brand.name)}`)
     }
 
+    // Клик по стране
     const handleCountryClick = (country) => {
-        alert(`Товары из страны: ${country.name}`)
+        navigate(`/catalog?type=country&name=${encodeURIComponent(country.name)}`)
     }
 
+    // Клик по товару со скидкой
     const handleProductClick = (product) => {
-        alert(`Товар: ${product.name}`)
+        navigate(`/product/${product.sku}`)
     }
 
     useEffect(() => {
@@ -154,7 +160,7 @@ function HomePage() {
                     </button>
                 )}
                 <div className="breadcrumb">
-                    <span className={!currentParent ? 'active' : ''}>Все категории</span>
+                    <span className={!currentParent ? 'active' : ''}></span>
                     {currentParent && (
                         <>
                             <span className="separator">/</span>
@@ -165,7 +171,7 @@ function HomePage() {
             </div>
 
             <h1 className="page-title">
-                {currentParent ? currentParent.title : 'Каталог товаров'}
+                {currentParent ? currentParent.title : 'Категории товаров'}
             </h1>
 
             {loading ? (
