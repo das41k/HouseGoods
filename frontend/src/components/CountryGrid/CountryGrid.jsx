@@ -26,7 +26,7 @@ function CountryGrid({ countries, onCountryClick }) {
                             <div className="country-flag-wrapper">
                                 {country.imageURl ? (
                                     <img
-                                        src={`/house-goods/static${country.imageURl}`}
+                                        src={`/house-goods/${country.imageURl}`}
                                         alt={country.name}
                                         className="country-flag"
                                         onError={(e) => {
