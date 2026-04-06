@@ -6,7 +6,7 @@ function CategoryCard({ category, onClick }) {
 
     // Правильный путь к картинке
     const imageUrl = category.imageURl && !imgError
-        ? `/house-goods/static${category.imageURl}`  // /images/... → /house-goods/static/images/...
+        ? `/house-goods/${category.imageURl}`  // /images/... → /house-goods/static/images/...
         : null
 
     return (

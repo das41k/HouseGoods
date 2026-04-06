@@ -61,3 +61,125 @@ INSERT INTO products (sku, name, description, base_price, sale_price, count, ima
 ('VAN003', 'Коврик в ванную', 'Микрофибра, противоскользящая основа, 50х80см', 1200.00, 999.00, 30, NULL, 0.8, 50, 80, 1, 6, 1),
 ('VAN004', 'Держатель для полотенец', 'Нержавеющая сталь, 2 штанги', 950.00, 799.00, 50, NULL, 1.0, 60, 10, 8, 6, 1),
 ('VAN005', 'Шторка для душа', 'ПВХ, размер 180х200см, с люверсами', 650.00, 499.00, 40, NULL, 0.5, 20, 15, 5, 6, 1);
+
+
+-- Добавление товаров без скидок
+INSERT INTO products (sku, name, description, base_price, sale_price, count, image_url, weight_kg, length_cm, width_cm, height_cm, category_id, brand_id) VALUES
+
+-- Кухня - Посуда (category_id = 2) - товары без скидок
+('KCH011', 'Чайник заварочный стеклянный 800мл', 'Термостойкое стекло, нержавеющая крышка, съемный фильтр', 1800.00, NULL, 35, NULL, 0.6, 15, 15, 18, 2, 3),
+('KCH012', 'Набор кастрюль 3шт', 'Нержавеющая сталь, крышки в комплекте, объемы 2/3/5л', 4500.00, NULL, 20, NULL, 6.0, 35, 25, 18, 2, 2),
+('KCH013', 'Сковорода гриль 26см', 'Чугунная сковорода с рифленым дном, подходит для индукции', 3200.00, NULL, 15, NULL, 2.5, 45, 26, 5, 2, 3),
+
+-- Кухня - Техника (category_id = 3) - товары без скидок
+('KCH014', 'Мультиварка 5л', '8 программ, отложенный старт, подогрев, 700Вт', 6500.00, NULL, 12, NULL, 5.0, 35, 30, 25, 3, 2),
+('KCH015', 'Соковыжималка шнековая', 'Медленный отжим, 200Вт, обратный ход', 8500.00, NULL, 8, NULL, 4.5, 40, 20, 30, 3, 2),
+('KCH016', 'Кофемашина капельная', '1.2л, функция подогрева, антикапельная система', 4200.00, NULL, 18, NULL, 2.8, 25, 20, 30, 3, 2),
+
+-- Гостиная (category_id = 4) - товары без скидок
+('GST006', 'Пуф мягкий', 'Велюровая обивка, наполнитель пенополистирол', 2800.00, NULL, 25, NULL, 3.0, 45, 45, 40, 4, 1),
+('GST007', 'Этажерка для цветов', 'Металлическая, 3 полки, черный мат', 3500.00, NULL, 15, NULL, 8.0, 60, 30, 80, 4, 1),
+('GST008', 'Настенное зеркало', 'Овальное, деревянная рама, 60х80см', 3200.00, NULL, 10, NULL, 5.0, 65, 10, 85, 4, 4),
+
+-- Спальня (category_id = 5) - товары без скидок
+('SPL006', 'Комод 4 ящика', 'ЛДСП, направляющие с доводчиками', 12500.00, NULL, 7, NULL, 32.0, 80, 45, 90, 5, 1),
+('SPL007', 'Прикроватная тумба', 'Массив сосны, 1 выдвижной ящик', 4500.00, NULL, 12, NULL, 12.0, 50, 40, 50, 5, 1),
+('SPL008', 'Туалетный столик', 'С зеркалом, выдвижной механизм, белый глянец', 8900.00, NULL, 6, NULL, 25.0, 80, 45, 75, 5, 1),
+
+-- Ванная (category_id = 6) - товары без скидок
+('VAN006', 'Набор стаканов для зубных щеток', 'Керамика, 2 шт, белый', 650.00, NULL, 50, NULL, 0.5, 12, 12, 10, 6, 1),
+('VAN007', 'Крючки на присосках 4шт', 'Металл+силикон, выдерживает до 3кг', 350.00, NULL, 80, NULL, 0.2, 15, 8, 5, 6, 1),
+('VAN008', 'Диспенсер для жидкого мыла', 'Настенный, пластик, 500мл', 480.00, NULL, 60, NULL, 0.3, 12, 8, 15, 6, 1);
+
+-- Добавление атрибутов
+INSERT INTO attributes (name, code, is_filterable) VALUES
+-- Цвета
+('Цвет', 'color', TRUE),
+('Цвет корпуса', 'body_color', TRUE),
+('Цвет ручек', 'handle_color', TRUE),
+
+-- Материалы
+('Материал', 'material', TRUE),
+('Материал корпуса', 'body_material', TRUE),
+('Материал лезвия', 'blade_material', TRUE),
+('Покрытие', 'coating', TRUE),
+
+-- Размеры/вес
+('Вес', 'weight', TRUE),
+('Ширина', 'width', FALSE),
+('Глубина', 'depth', FALSE),
+('Высота', 'height', FALSE),
+('Объем', 'volume', TRUE),
+
+-- Технические характеристики
+('Мощность', 'power', TRUE),
+('Тип управления', 'control_type', TRUE),
+('Количество программ', 'programs_count', TRUE),
+('Напряжение', 'voltage', FALSE),
+
+-- Прочие
+('Коллекция', 'collection', TRUE),
+('Страна производства', 'manufacture_country', TRUE),
+('Гарантия', 'warranty', TRUE),
+('Уход', 'care_instructions', FALSE);
+
+-- Вставка значений атрибутов для товаров
+INSERT INTO product_attribute_values (product_id, attribute_id, value, unit) VALUES
+
+-- KCH001 (Сковорода) - product_id = 1
+(1, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Черный', NULL),
+(1, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Алюминий', NULL),
+(1, (SELECT attribute_id FROM attributes WHERE code = 'coating'), 'Антипригарное', NULL),
+(1, (SELECT attribute_id FROM attributes WHERE code = 'volume'), '2.5', 'л'),
+
+-- KCH002 (Кастрюля) - product_id = 2
+(2, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Серебристый', NULL),
+(2, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Нержавеющая сталь', NULL),
+(2, (SELECT attribute_id FROM attributes WHERE code = 'volume'), '5', 'л'),
+
+-- KCH006 (Электрочайник) - product_id = 6
+(6, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Серебристый', NULL),
+(6, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Стекло', NULL),
+(6, (SELECT attribute_id FROM attributes WHERE code = 'power'), '2200', 'Вт'),
+(6, (SELECT attribute_id FROM attributes WHERE code = 'volume'), '1.7', 'л'),
+
+-- KCH007 (Микроволновка) - product_id = 7
+(7, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Белый', NULL),
+(7, (SELECT attribute_id FROM attributes WHERE code = 'power'), '700', 'Вт'),
+(7, (SELECT attribute_id FROM attributes WHERE code = 'volume'), '20', 'л'),
+(7, (SELECT attribute_id FROM attributes WHERE code = 'control_type'), 'Механический', NULL),
+
+-- GST001 (Диван) - product_id = 11
+(11, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Бежевый', NULL),
+(11, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Велюр', NULL),
+(11, (SELECT attribute_id FROM attributes WHERE code = 'collection'), 'Скандинавия', NULL),
+
+-- GST002 (Журнальный столик) - product_id = 12
+(12, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Черный', NULL),
+(12, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Стекло', NULL),
+
+-- SPL001 (Кровать) - product_id = 16
+(16, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Дуб', NULL),
+(16, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Массив сосны', NULL),
+(16, (SELECT attribute_id FROM attributes WHERE code = 'collection'), 'Классика', NULL),
+
+-- SPL002 (Матрас) - product_id = 17
+(17, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Кокосовая койра', NULL),
+(17, (SELECT attribute_id FROM attributes WHERE code = 'warranty'), '24', 'мес'),
+(17, (SELECT attribute_id FROM attributes WHERE code = 'collection'), 'Ортопедическая серия', NULL),
+
+-- VAN001 (Полотенце) - product_id = 21
+(21, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Белый', NULL),
+(21, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Хлопок', NULL),
+(21, (SELECT attribute_id FROM attributes WHERE code = 'care_instructions'), 'Машинная стирка до 40°', NULL),
+
+-- KCH011 (Чайник стеклянный) - новый товар без скидки
+(26, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Прозрачный', NULL),
+(26, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Стекло', NULL),
+(26, (SELECT attribute_id FROM attributes WHERE code = 'volume'), '0.8', 'л'),
+
+-- KCH014 (Мультиварка) - product_id = 29
+(29, (SELECT attribute_id FROM attributes WHERE code = 'color'), 'Черный', NULL),
+(29, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Пластик', NULL),
+(29, (SELECT attribute_id FROM attributes WHERE code = 'power'), '700', 'Вт'),
+(29, (SELECT attribute_id FROM attributes WHERE code = 'programs_count'), '8', NULL);

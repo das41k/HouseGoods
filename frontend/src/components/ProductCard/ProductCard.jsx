@@ -10,7 +10,7 @@ function ProductCard({ product, onClick }) {
         : 0
 
     const imageUrl = !imgError
-        ? `/house-goods/static/images/products/${product.sku}.jpg`
+        ? `/house-goods/images/products/${product.sku}.jpg`
         : null
 
     return (
