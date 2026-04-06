@@ -23,7 +23,7 @@ public class ProductController {
         return ResponseEntity.ok(productService.getProductBySku(sku));
     }
 
-    @GetMapping("/filters")
+    @PostMapping("/filters")
     public ResponseEntity<List<ProductResponse>> getProductsByFilters(@RequestBody ProductFilterRequest filters) {
         log.debug("GET /api/products/filters : {}", filters);
         return ResponseEntity.ok(productService.getProductsByFilters(filters));
@@ -33,5 +33,11 @@ public class ProductController {
     public ResponseEntity<List<ProductResponse>> getProductsByStocks() {
         log.debug("GET /api/products/sales");
         return ResponseEntity.ok(productService.getProductsByContainsSalePrice());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        log.debug("GET /api/products");
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 }

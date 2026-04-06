@@ -29,10 +29,16 @@ public class CategoryController {
         return ResponseEntity.ok(productService.getProductsByCategory(categoryName));
     }
 
-    @GetMapping
+    @GetMapping("/parents")
     public ResponseEntity<List<CategoryResponse>> getParentCategories() {
-        log.debug("GET /api/categories");
+        log.debug("GET /api/categories/parents");
         return ResponseEntity.ok(categoryService.getParentCategories());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+        log.debug("GET /api/categories");
+        return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
     @GetMapping("{id}/children")

@@ -4,6 +4,7 @@ import Header from './components/Header/Header'
 import MobileMenu from './components/MobileMenu/MobileMenu'
 import Footer from './components/Footer/Footer'
 import HomePage from './pages/HomePage'
+import CatalogPage from './pages/CatalogPage'
 import ProductPage from './pages/ProductPage'
 import './App.css'
 
@@ -17,6 +18,7 @@ function App() {
             <main className="main">
                 <Routes>
                     <Route path="/" element={<HomePage />} />
+                    <Route path="/catalog" element={<CatalogPage />} />
                     <Route path="/product/:sku" element={<ProductPage />} />
                 </Routes>
             </main>

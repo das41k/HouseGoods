@@ -1,20 +1,39 @@
 import React from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import './Footer.css'
 import logoImage from '../../assets/logo.png'
 
 function Footer() {
-    const scrollToSection = (id) => {
-        const element = document.getElementById(id)
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const handleScrollToSection = (sectionId) => {
+        if (location.pathname !== '/') {
+            navigate('/')
+            setTimeout(() => {
+                const element = document.getElementById(sectionId)
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                }
+            }, 100)
+        } else {
+            const element = document.getElementById(sectionId)
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }
         }
     }
 
+    const handleCatalogClick = () => {
+        navigate('/catalog?type=all')
+    }
+
     const menuItems = [
-        { name: 'Каталог', id: 'catalog-section' },
-        { name: 'Скидки', id: 'sales-section' },
-        { name: 'Бренды', id: 'brands-section' },
-        { name: 'Страны', id: 'countries-section' }
+        { name: 'Категории', id: 'catalog-section', isCatalog: false },
+        { name: 'Скидки', id: 'sales-section', isCatalog: false },
+        { name: 'Бренды', id: 'brands-section', isCatalog: false },
+        { name: 'Страны', id: 'countries-section', isCatalog: false },
+        { name: 'Каталог', isCatalog: true }
     ]
 
     return (
@@ -38,12 +57,21 @@ function Footer() {
                     <ul className="footer-links">
                         {menuItems.map(item => (
                             <li key={item.name}>
-                                <button
-                                    className="footer-link"
-                                    onClick={() => scrollToSection(item.id)}
-                                >
-                                    {item.name}
-                                </button>
+                                {item.isCatalog ? (
+                                    <button
+                                        className="footer-link"
+                                        onClick={handleCatalogClick}
+                                    >
+                                        {item.name}
+                                    </button>
+                                ) : (
+                                    <button
+                                        className="footer-link"
+                                        onClick={() => handleScrollToSection(item.id)}
+                                    >
+                                        {item.name}
+                                    </button>
+                                )}
                             </li>
                         ))}
                     </ul>
