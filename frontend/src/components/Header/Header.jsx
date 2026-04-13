@@ -8,21 +8,28 @@ function Header({ onMenuOpen }) {
     const navigate = useNavigate()
     const location = useLocation()
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [userLogin, setUserLogin] = useState('')
+    const [userName, setUserName] = useState('')
+    const [userPhone, setUserPhone] = useState('')
 
     useEffect(() => {
         const token = localStorage.getItem('token')
-        const login = localStorage.getItem('userLogin')
+        const name = localStorage.getItem('userName') || localStorage.getItem('userLogin') || ''
+        const phone = localStorage.getItem('userPhone') || ''
         setIsLoggedIn(!!token)
-        setUserLogin(login || '')
+        setUserName(name)
+        setUserPhone(phone)
     }, [location])
 
     const handleLogout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('userLogin')
+        localStorage.removeItem('userName')
+        localStorage.removeItem('userEmail')
+        localStorage.removeItem('userPhone')
         localStorage.removeItem('userRole')
         setIsLoggedIn(false)
-        setUserLogin('')
+        setUserName('')
+        setUserPhone('')
         navigate('/')
     }
 
@@ -73,7 +80,8 @@ function Header({ onMenuOpen }) {
                 <div className="header-right">
                     <HeaderIcons
                         isLoggedIn={isLoggedIn}
-                        userLogin={userLogin}
+                        userName={userName}
+                        userPhone={userPhone}
                         onLogout={handleLogout}
                     />
                     <button className="mobile-menu-btn" onClick={onMenuOpen}>

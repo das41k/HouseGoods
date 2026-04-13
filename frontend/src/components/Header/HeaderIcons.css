@@ -1,7 +1,7 @@
 .header-icons {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
 }
 
 .icon-btn {
@@ -14,12 +14,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s;
-    color: var(--gray-700);
+    transition: all 0.2s;
+    color: #4a5568;
 }
 
 .icon-btn:hover {
-    background: var(--gray-100);
+    background: #e8f5e9;
+    color: #4caf50;
 }
 
 .icon-badge {
@@ -39,33 +40,71 @@
     justify-content: center;
 }
 
-.user-avatar {
-    width: 32px;
-    height: 32px;
-    background: #4caf50;
-    border-radius: 50%;
+/* Блок с пользователем */
+.user-info {
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
+    margin-left: 4px;
 }
 
-.avatar-initials {
-    color: white;
+.user-details {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.user-name {
     font-size: 14px;
     font-weight: 600;
+    color: #2d3748;
+}
+
+.user-phone {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.logout-btn {
+    background: #4caf50;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+}
+
+.logout-btn:hover {
+    background: #388e3c;
+    transform: translateY(-1px);
+}
+
+/* Адаптив */
+@media (max-width: 640px) {
+    .user-info {
+        gap: 6px;
+    }
+
+    .user-name {
+        font-size: 12px;
+    }
+
+    .logout-btn {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
 }
 
 @media (max-width: 480px) {
-    .icon-btn {
-        padding: 6px;
+    .logout-btn {
+        padding: 4px 10px;
+        font-size: 11px;
     }
 
-    .user-avatar {
-        width: 28px;
-        height: 28px;
-    }
-
-    .avatar-initials {
-        font-size: 12px;
+    .user-details {
+        display: none;
     }
 }

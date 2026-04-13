@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import './HeaderIcons.css'
 
-function HeaderIcons({ isLoggedIn, userLogin, onLogout }) {
+function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
     const navigate = useNavigate()
 
     const handleAuthClick = () => {
@@ -36,20 +36,30 @@ function HeaderIcons({ isLoggedIn, userLogin, onLogout }) {
                 <span className="icon-badge">2</span>
             </button>
 
-            <button className="icon-btn" onClick={handleAuthClick} aria-label={isLoggedIn ? "Профиль" : "Войти"}>
-                {isLoggedIn ? (
-                    <div className="user-avatar">
-                        <span className="avatar-initials">
-                            {userLogin?.charAt(0).toUpperCase() || 'U'}
-                        </span>
+            {isLoggedIn ? (
+                <div className="user-info">
+                    <button className="icon-btn user-btn">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                        </svg>
+                    </button>
+                    <div className="user-details">
+                        <span className="user-name">{userName || 'Пользователь'}</span>
+                        {userPhone && <span className="user-phone">{userPhone}</span>}
                     </div>
-                ) : (
+                    <button onClick={onLogout} className="logout-btn">
+                        Выйти
+                    </button>
+                </div>
+            ) : (
+                <button className="icon-btn" onClick={handleAuthClick}>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                         <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                     </svg>
-                )}
-            </button>
+                </button>
+            )}
         </div>
     )
 }

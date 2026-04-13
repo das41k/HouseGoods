@@ -18,30 +18,20 @@ function LoginPage() {
         setError('')
     }
 
-    // Функция нормализации телефона
     const normalizePhone = (phone) => {
-        // Убираем все не цифры
         let digits = phone.replace(/\D/g, '')
-
-        // Если номер начинается с 8, заменяем на +7
         if (digits.startsWith('8') && digits.length === 11) {
             digits = '7' + digits.slice(1)
         }
-
-        // Если номер начинается с 7 и длина 11, добавляем +
         if (digits.startsWith('7') && digits.length === 11) {
             digits = '+' + digits
         }
-
-        // Если номер начинается с 9 (без кода страны), добавляем +7
         if (digits.startsWith('9') && digits.length === 10) {
             digits = '+7' + digits
         }
-
         return digits
     }
 
-    // Проверка, является ли строка email'ом
     const isEmail = (str) => {
         return /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/.test(str)
     }
@@ -68,7 +58,6 @@ function LoginPage() {
         try {
             let loginValue = formData.login.trim()
 
-            // Если это не email, то нормализуем как телефон
             if (!isEmail(loginValue)) {
                 loginValue = normalizePhone(loginValue)
             }
@@ -82,15 +71,24 @@ function LoginPage() {
                 })
             })
 
-            const data = await response.json()
+            let data
+            try {
+                data = await response.json()
+            } catch {
+                data = { message: 'Ошибка сервера' }
+            }
 
             if (!response.ok) {
                 throw new Error(data.message || 'Неверный логин или пароль')
             }
 
+            // Сохраняем данные пользователя
             localStorage.setItem('token', data.token)
-            localStorage.setItem('userLogin', data.login)
-            localStorage.setItem('userRole', data.role)
+            localStorage.setItem('userLogin', data.username || data.email || data.phone)
+            localStorage.setItem('userName', data.username || '')
+            localStorage.setItem('userEmail', data.email || '')
+            localStorage.setItem('userPhone', data.phone || '')
+            localStorage.setItem('userRole', data.role || 'USER')
 
             navigate('/')
         } catch (err) {
@@ -102,7 +100,6 @@ function LoginPage() {
 
     return (
         <div className="auth-page">
-            {/* Анимированные фоновые элементы */}
             <div className="auth-bg">
                 <div className="bg-circle bg-circle-1"></div>
                 <div className="bg-circle bg-circle-2"></div>
