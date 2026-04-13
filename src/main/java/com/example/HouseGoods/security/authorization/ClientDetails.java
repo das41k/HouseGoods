@@ -1,6 +1,7 @@
 package com.example.HouseGoods.security.authorization;
 
 import com.example.HouseGoods.client.Client;
+import com.example.HouseGoods.client.ClientRole;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +25,11 @@ public class ClientDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + client.getRole().name()));
+        ClientRole role = client.getRole();
+        if (role == null || role.name().isBlank()) {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER")); // роль по умолчанию
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name().toUpperCase()));
     }
 
     @Override
