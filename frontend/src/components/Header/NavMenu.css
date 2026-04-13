@@ -1,70 +1,30 @@
-/* Десктопное меню */
-.nav-menu.desktop {
-    display: flex;
-    align-items: center;
-    gap: 32px;
-}
-
-.nav-link {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--gray-700);
-    text-decoration: none;
-    transition: color 0.2s;
-    padding: 8px 0;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
-.nav-link:hover {
-    color: var(--green);
-}
-
-/* Мобильная кнопка */
-.mobile-menu-btn {
-    display: none;
-    font-size: 28px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    width: 40px;
-    height: 40px;
-    color: var(--gray-800);
-}
-
-/* Контейнер для меню (на всю страницу) */
+/* Мобильное меню - стили */
 .mobile-menu-container {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 9999;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
 }
 
-/* Оверлей на всю страницу */
 .mobile-overlay {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    height: 100%;
     background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px);
 }
 
-/* Меню */
 .mobile-menu {
     position: absolute;
     top: 0;
     right: 0;
-    width: 80%;
-    max-width: 300px;
+    width: 85%;
+    max-width: 320px;
     height: 100%;
-    background: var(--white);
-    box-shadow: -2px 0 20px rgba(0, 0, 0, 0.1);
+    background: white;
     display: flex;
     flex-direction: column;
     animation: slideIn 0.3s ease;
@@ -81,57 +41,111 @@
 
 .mobile-menu-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 20px;
-    border-bottom: 1px solid var(--gray-200);
+    justify-content: space-between;
+    padding: 20px 16px;
+    border-bottom: 1px solid #e5e7eb;
     font-size: 18px;
     font-weight: 600;
 }
 
 .mobile-menu-header button {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
     background: none;
     border: none;
-    font-size: 18px;
+    font-size: 24px;
     cursor: pointer;
-    color: var(--gray-600);
+    padding: 0;
+}
+
+/* Карточка пользователя */
+.mobile-user-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    margin: 12px 16px;
+    background: #f0fdf4;
+    border-radius: 16px;
+    border: 1px solid #dcfce7;
+}
+
+.mobile-user-avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-user-avatar span {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.mobile-user-details {
+    flex: 1;
+}
+
+.mobile-user-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 4px;
+}
+
+.mobile-user-phone {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Пункты меню */
+.mobile-menu-items {
+    flex: 1;
+    padding: 8px 0;
 }
 
 .mobile-menu-link {
-    padding: 16px 20px;
+    display: block;
+    width: 100%;
+    padding: 14px 20px;
+    background: none;
+    border: none;
+    text-align: left;
     font-size: 16px;
-    font-weight: 500;
-    color: var(--gray-800);
-    text-decoration: none;
-    border-bottom: 1px solid var(--gray-100);
-    transition: all 0.2s;
+    color: #374151;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 .mobile-menu-link:hover {
-    color: var(--green);
-    padding-left: 24px;
+    background: #f3f4f6;
 }
 
-/* Адаптив */
-@media (max-width: 768px) {
-    .nav-menu.desktop {
-        display: none;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
+/* Футер меню */
+.mobile-menu-footer {
+    padding: 16px;
+    border-top: 1px solid #e5e7eb;
 }
 
-@media (min-width: 769px) {
-    .mobile-menu-btn {
-        display: none;
-    }
+.mobile-menu-link.logout {
+    color: #ef4444;
+    text-align: center;
+}
 
-    .mobile-menu-container {
-        display: none;
-    }
+.mobile-menu-link.logout:hover {
+    background: #fee2e2;
+}
+
+.mobile-menu-link.login {
+    background: #4caf50;
+    color: white;
+    text-align: center;
+    border-radius: 12px;
+}
+
+.mobile-menu-link.login:hover {
+    background: #388e3c;
 }

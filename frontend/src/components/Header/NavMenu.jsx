@@ -1,26 +1,52 @@
 import React, { useState, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import './NavMenu.css'
 
 function NavMenu({ isMenuOpen, setMenuOpen }) {
-    const menuItems = [
-        { name: 'Каталог', link: '#catalog-section' },
-        { name: 'Скидки', link: '#sales-section' },
-        { name: 'Бренды', link: '#brands-section' },
-        { name: 'Страны', link: '#countries-section' }
-    ]
+    const navigate = useNavigate()
+    const location = useLocation()
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [userName, setUserName] = useState('')
+    const [userPhone, setUserPhone] = useState('')
 
-    const handleLinkClick = (e, link) => {
-        if (link.startsWith('#')) {
-            e.preventDefault()
-            setMenuOpen(false)
-            const element = document.getElementById(link.slice(1))
-            if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        const name = localStorage.getItem('userName') || localStorage.getItem('userLogin') || ''
+        const phone = localStorage.getItem('userPhone') || ''
+        setIsLoggedIn(!!token)
+        setUserName(name)
+        setUserPhone(phone)
+    }, [location, isMenuOpen])
+
+    const handleLinkClick = (id) => {
+        setMenuOpen(false)
+        const element = document.getElementById(id)
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
         }
     }
 
-    // Блокируем скролл
+    const handleCatalogClick = () => {
+        setMenuOpen(false)
+        navigate('/catalog?type=all')
+    }
+
+    const handleLoginClick = () => {
+        setMenuOpen(false)
+        navigate('/login')
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('userLogin')
+        localStorage.removeItem('userName')
+        localStorage.removeItem('userEmail')
+        localStorage.removeItem('userPhone')
+        localStorage.removeItem('userRole')
+        setMenuOpen(false)
+        navigate('/')
+    }
+
     useEffect(() => {
         if (isMenuOpen) {
             document.body.style.overflow = 'hidden'
@@ -42,16 +68,46 @@ function NavMenu({ isMenuOpen, setMenuOpen }) {
                     <span>Меню</span>
                     <button onClick={() => setMenuOpen(false)}>✕</button>
                 </div>
-                {menuItems.map(item => (
-                    <a
-                        key={item.name}
-                        href={item.link}
-                        className="mobile-menu-link"
-                        onClick={(e) => handleLinkClick(e, item.link)}
-                    >
-                        {item.name}
-                    </a>
-                ))}
+
+                {/* Информация о пользователе в мобильном меню */}
+                {isLoggedIn && (
+                    <div className="mobile-user-card">
+                        <div className="mobile-user-avatar">
+                            <span>{userName?.charAt(0).toUpperCase() || 'U'}</span>
+                        </div>
+                        <div className="mobile-user-details">
+                            <div className="mobile-user-name">{userName || 'Пользователь'}</div>
+                            {userPhone && <div className="mobile-user-phone">{userPhone}</div>}
+                        </div>
+                    </div>
+                )}
+
+                <div className="mobile-menu-items">
+                    <button className="mobile-menu-link" onClick={handleCatalogClick}>
+                        Каталог
+                    </button>
+                    <button className="mobile-menu-link" onClick={() => handleLinkClick('sales-section')}>
+                        Скидки
+                    </button>
+                    <button className="mobile-menu-link" onClick={() => handleLinkClick('brands-section')}>
+                        Бренды
+                    </button>
+                    <button className="mobile-menu-link" onClick={() => handleLinkClick('countries-section')}>
+                        Страны
+                    </button>
+                </div>
+
+                <div className="mobile-menu-footer">
+                    {isLoggedIn ? (
+                        <button className="mobile-menu-link logout" onClick={handleLogout}>
+                            Выйти
+                        </button>
+                    ) : (
+                        <button className="mobile-menu-link login" onClick={handleLoginClick}>
+                            Войти
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     )

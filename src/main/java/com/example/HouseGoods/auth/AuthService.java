@@ -70,7 +70,9 @@ public class AuthService {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwt);
         loginResponse.setRole(role);
-        loginResponse.setLogin(loginRequest.getLogin());
+        loginResponse.setEmail(clientDetails.getClient().getEmail());
+        loginResponse.setPhone(clientDetails.getClient().getPhone());
+        loginResponse.setUsername(clientDetails.getClient().getUsername());
         return loginResponse;
     }
 }

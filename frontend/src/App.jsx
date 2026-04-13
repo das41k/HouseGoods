@@ -6,7 +6,9 @@ import Footer from './components/Footer/Footer'
 import HomePage from './pages/HomePage'
 import CatalogPage from './pages/CatalogPage'
 import ProductPage from './pages/ProductPage'
+import LoginPage from './pages/LoginPage'
 import './App.css'
+import RegisterPage from "./pages/RegisterPage.jsx";
 
 function App() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -20,6 +22,8 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/catalog" element={<CatalogPage />} />
                     <Route path="/product/:sku" element={<ProductPage />} />
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/register" element={<RegisterPage />} />
                 </Routes>
             </main>
             <Footer />
