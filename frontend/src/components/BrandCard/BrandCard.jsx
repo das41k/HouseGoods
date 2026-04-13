@@ -6,11 +6,11 @@ function BrandCard({ brand, onClick }) {
     const [flagError, setFlagError] = useState(false)
 
     const imageUrl = brand.imageURl && !imgError
-        ? `/house-goods/${brand.imageURl}`
+        ? `/house-goods${brand.imageURl}`
         : null
 
     const flagUrl = brand.countryResponse?.imageURl && !flagError
-        ? `/house-goods/${brand.countryResponse.imageURl}`
+        ? `/house-goods${brand.countryResponse.imageURl}`
         : null
 
     return (
