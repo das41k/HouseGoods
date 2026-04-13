@@ -15,8 +15,8 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthService {
-    private ClientRepository clientRepository;
-    private PasswordEncoder passwordEncoder;
+    private final ClientRepository clientRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public void register(RegisterRequest registerRequest) {
         Optional<Client> clientExists = clientRepository.findByPhoneOrEmail(registerRequest.getPhone(),
