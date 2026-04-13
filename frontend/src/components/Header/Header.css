@@ -1,0 +1,119 @@
+.header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--gray-200);
+    z-index: 100;
+}
+
+.header-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav-menu.desktop {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.nav-link {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-700);
+    text-decoration: none;
+    transition: color 0.2s;
+    padding: 8px 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.nav-link:hover {
+    color: var(--green);
+}
+
+/* Убираем outline при фокусе */
+.nav-link:focus {
+    outline: none;
+}
+
+/* Мобильная кнопка */
+.mobile-menu-btn {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    width: 36px;
+    height: 36px;
+    color: var(--gray-800);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .header-container {
+        height: 60px;
+        padding: 0 16px;
+        gap: 16px;
+    }
+
+    .nav-menu.desktop {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .header-right {
+        gap: 8px;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 480px) {
+    .header-container {
+        padding: 0 12px;
+        gap: 8px;
+    }
+
+    .mobile-menu-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 22px;
+    }
+
+    .header-right {
+        gap: 4px;
+    }
+}
+
+@media (max-width: 380px) {
+    .header-container {
+        padding: 0 10px;
+    }
+
+    .mobile-menu-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 20px;
+    }
+}

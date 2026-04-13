@@ -1,0 +1,66 @@
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.logo:hover {
+    opacity: 0.8;
+}
+
+.logo-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+}
+
+.logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+@media (max-width: 768px) {
+    .logo-text {
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+
+    .logo-img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo {
+        gap: 4px;
+    }
+
+    .logo-text {
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+
+    .logo-img {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+@media (max-width: 380px) {
+    .logo-text {
+        font-size: 12px;
+    }
+
+    .logo-img {
+        width: 20px;
+        height: 20px;
+    }
+}
