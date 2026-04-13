@@ -1,7 +1,18 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import './HeaderIcons.css'
 
-function HeaderIcons() {
+function HeaderIcons({ isLoggedIn, userLogin, onLogout }) {
+    const navigate = useNavigate()
+
+    const handleAuthClick = () => {
+        if (isLoggedIn) {
+            onLogout()
+        } else {
+            navigate('/login')
+        }
+    }
+
     return (
         <div className="header-icons">
             <button className="icon-btn" aria-label="Избранное">
@@ -25,11 +36,19 @@ function HeaderIcons() {
                 <span className="icon-badge">2</span>
             </button>
 
-            <button className="icon-btn" aria-label="Войти">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                    <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
-                </svg>
+            <button className="icon-btn" onClick={handleAuthClick} aria-label={isLoggedIn ? "Профиль" : "Войти"}>
+                {isLoggedIn ? (
+                    <div className="user-avatar">
+                        <span className="avatar-initials">
+                            {userLogin?.charAt(0).toUpperCase() || 'U'}
+                        </span>
+                    </div>
+                ) : (
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" strokeWidth="1.5" fill="none"/>
+                    </svg>
+                )}
             </button>
         </div>
     )

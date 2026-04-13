@@ -6,6 +6,7 @@ import Footer from './components/Footer/Footer'
 import HomePage from './pages/HomePage'
 import CatalogPage from './pages/CatalogPage'
 import ProductPage from './pages/ProductPage'
+import LoginPage from './pages/LoginPage'
 import './App.css'
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/catalog" element={<CatalogPage />} />
                     <Route path="/product/:sku" element={<ProductPage />} />
+                    <Route path="/login" element={<LoginPage />} />
                 </Routes>
             </main>
             <Footer />
