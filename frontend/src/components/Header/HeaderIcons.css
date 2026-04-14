@@ -1,7 +1,7 @@
 .header-icons {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
 }
 
 .icon-btn {
@@ -9,69 +9,102 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: var(--gray-700);
     padding: 8px;
     border-radius: 50%;
-    transition: all 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.2s;
+    color: #4a5568;
 }
 
 .icon-btn:hover {
-    background: var(--gray-100);
-    color: var(--green);
+    background: #e8f5e9;
+    color: #4caf50;
 }
 
 .icon-badge {
     position: absolute;
     top: 0;
     right: 0;
-    background: var(--green);
+    background: #ef4444;
     color: white;
     font-size: 10px;
     font-weight: 600;
-    min-width: 18px;
-    height: 18px;
-    border-radius: 9px;
+    padding: 2px 5px;
+    border-radius: 10px;
+    min-width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 5px;
 }
 
-@media (max-width: 768px) {
-    .header-icons {
-        gap: 12px;
+/* Блок с пользователем */
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 4px;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.user-phone {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+.logout-btn {
+    background: #4caf50;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: white;
+}
+
+.logout-btn:hover {
+    background: #388e3c;
+    transform: translateY(-1px);
+}
+
+/* Адаптив */
+@media (max-width: 640px) {
+    .user-info {
+        gap: 6px;
     }
 
-    .icon-btn {
-        padding: 6px;
+    .user-name {
+        font-size: 12px;
     }
 
-    .icon-btn svg {
-        width: 20px;
-        height: 20px;
+    .logout-btn {
+        padding: 4px 10px;
+        font-size: 11px;
     }
 }
 
 @media (max-width: 480px) {
-    .header-icons {
-        gap: 4px;
+    .logout-btn {
+        padding: 4px 10px;
+        font-size: 11px;
     }
 
-    .icon-btn {
-        padding: 4px;
-    }
-
-    .icon-btn svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    .icon-badge {
-        min-width: 14px;
-        height: 14px;
-        font-size: 8px;
+    .user-details {
+        display: none;
     }
 }

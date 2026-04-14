@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Logo from './Logo'
 import HeaderIcons from './HeaderIcons'
@@ -7,6 +7,31 @@ import './Header.css'
 function Header({ onMenuOpen }) {
     const navigate = useNavigate()
     const location = useLocation()
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [userName, setUserName] = useState('')
+    const [userPhone, setUserPhone] = useState('')
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        const name = localStorage.getItem('userName') || localStorage.getItem('userLogin') || ''
+        const phone = localStorage.getItem('userPhone') || ''
+        setIsLoggedIn(!!token)
+        setUserName(name)
+        setUserPhone(phone)
+    }, [location])
+
+    const handleLogout = () => {
+        localStorage.removeItem('token')
+        localStorage.removeItem('userLogin')
+        localStorage.removeItem('userName')
+        localStorage.removeItem('userEmail')
+        localStorage.removeItem('userPhone')
+        localStorage.removeItem('userRole')
+        setIsLoggedIn(false)
+        setUserName('')
+        setUserPhone('')
+        navigate('/')
+    }
 
     const handleScrollToSection = (sectionId) => {
         if (location.pathname !== '/') {
@@ -53,7 +78,12 @@ function Header({ onMenuOpen }) {
                 </nav>
 
                 <div className="header-right">
-                    <HeaderIcons />
+                    <HeaderIcons
+                        isLoggedIn={isLoggedIn}
+                        userName={userName}
+                        userPhone={userPhone}
+                        onLogout={handleLogout}
+                    />
                     <button className="mobile-menu-btn" onClick={onMenuOpen}>
                         ☰
                     </button>
