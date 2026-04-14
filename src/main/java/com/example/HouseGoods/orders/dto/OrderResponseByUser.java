@@ -15,5 +15,6 @@ public class OrderResponseByUser {
     private Long orderId;
     private LocalDateTime orderDate;
     private Integer totalAmount;
+    private Integer deliveryAmount;
     private DeliveryResponse deliveryInfo;
 }
