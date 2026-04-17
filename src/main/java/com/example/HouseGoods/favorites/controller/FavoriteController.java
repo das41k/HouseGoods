@@ -34,4 +34,13 @@ public class FavoriteController {
         favoritesService.saveNewFavorite(email, sku);
         return ResponseEntity.ok("Товар был успешно добавлен в избранное");
     }
+
+    @DeleteMapping("/{sku}")
+    public ResponseEntity<?> deleteFavorite(@PathVariable String sku,
+            @AuthenticationPrincipal ClientDetails clientDetails) {
+        log.debug("DELETE /api/favorites/sku : {}", sku);
+        String email = clientDetails.getUsername();
+        favoritesService.deleteFavorite(email, sku);
+        return ResponseEntity.ok("Товар был успешно удален из избранного!");
+    }
 }

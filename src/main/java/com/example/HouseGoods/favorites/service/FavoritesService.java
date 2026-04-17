@@ -5,6 +5,7 @@ import com.example.HouseGoods.client.ClientRepository;
 import com.example.HouseGoods.favorites.Favorite;
 import com.example.HouseGoods.favorites.dto.FavoritesResponse;
 import com.example.HouseGoods.favorites.exception.FavoriteIsAlreadyException;
+import com.example.HouseGoods.favorites.exception.FavoriteNotFoundException;
 import com.example.HouseGoods.favorites.mapper.FavoritesMapper;
 import com.example.HouseGoods.favorites.repository.FavoritesRepository;
 import com.example.HouseGoods.products.Product;
@@ -53,5 +54,16 @@ public class FavoritesService {
         favorite.setProduct(product);
         favorite.setDateAdded(LocalDateTime.now());
         favoritesRepository.save(favorite);
+    }
+
+    public void deleteFavorite(String email, String sku) {
+        log.info("Раб FavoriteService: deleteFavorite(String email, String sku)");
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден в системе!"));
+        Product product = productRepository.findBySku(sku)
+                .orElseThrow(() -> new ProductNotFoundException("Товар не был найден!"));
+        Favorite favorite = favoritesRepository.findByProductAndClient(product, client)
+                .orElseThrow(() -> new FavoriteNotFoundException("Товар не был найден в избранном"));
+        favoritesRepository.delete(favorite);
     }
 }

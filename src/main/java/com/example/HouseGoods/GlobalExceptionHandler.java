@@ -2,6 +2,7 @@ package com.example.HouseGoods;
 
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
 import com.example.HouseGoods.favorites.exception.FavoriteIsAlreadyException;
+import com.example.HouseGoods.favorites.exception.FavoriteNotFoundException;
 import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
 import com.example.HouseGoods.orders.exception.OrderNotFoundException;
 import com.example.HouseGoods.products.exception.BrandNotFoundException;
@@ -122,5 +123,15 @@ public class GlobalExceptionHandler {
         response.put("status", HttpStatus.BAD_REQUEST);
         response.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(FavoriteNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleFavoriteNotFoundException(FavoriteNotFoundException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 }
