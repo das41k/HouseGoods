@@ -1,0 +1,594 @@
+/* Основные стили */
+.orders-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+    padding: 32px 0 64px;
+}
+
+.orders-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Хлебные крошки */
+.orders-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-size: 14px;
+}
+
+.breadcrumb-link {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.breadcrumb-link:hover {
+    color: #00a046;
+    background: rgba(0, 160, 70, 0.1);
+}
+
+.breadcrumb-separator {
+    color: #d1d5db;
+}
+
+.breadcrumb-active {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+/* Заголовок */
+.orders-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.orders-title {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1f2937 0%, #00a046 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.orders-count {
+    font-size: 14px;
+    color: #6b7280;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Аккордеон */
+.orders-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.accordion-item {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeInUp 0.4s ease backwards;
+}
+
+.accordion-item:hover {
+    box-shadow: 0 8px 25px rgba(0, 160, 70, 0.1);
+    transform: translateY(-2px);
+}
+
+.accordion-item.expanded {
+    box-shadow: 0 10px 30px rgba(0, 160, 70, 0.15);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Заголовок аккордеона */
+.accordion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 20px;
+}
+
+.accordion-header:hover {
+    background: rgba(0, 160, 70, 0.03);
+}
+
+.accordion-header-left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.order-badge {
+    background: linear-gradient(135deg, #00a046 0%, #00853b 100%);
+    padding: 6px 14px;
+    border-radius: 30px;
+    box-shadow: 0 2px 8px rgba(0, 160, 70, 0.2);
+}
+
+.badge-number {
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+.order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.order-date-label {
+    font-size: 11px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.order-date {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.accordion-header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.order-price {
+    text-align: right;
+}
+
+.price-label {
+    font-size: 11px;
+    color: #9ca3af;
+    display: block;
+}
+
+.price-value {
+    font-size: 18px;
+    font-weight: 700;
+    color: #00a046;
+}
+
+.order-status-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.status-transit {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.status-delivered {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.status-returned {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.status-icon {
+    font-size: 14px;
+}
+
+.accordion-icon {
+    color: #9ca3af;
+    transition: transform 0.3s;
+}
+
+.chevron {
+    transition: transform 0.3s;
+}
+
+.chevron.rotated {
+    transform: rotate(180deg);
+}
+
+/* Контент аккордеона */
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-item.expanded .accordion-content {
+    max-height: 800px;
+}
+
+.content-inner {
+    padding: 0 24px 24px 24px;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Карточки */
+.delivery-card, .summary-card {
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.2s;
+}
+
+.delivery-card:hover, .summary-card:hover {
+    background: #f3f4f6;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.card-icon {
+    font-size: 24px;
+}
+
+.card-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0;
+}
+
+/* Адрес доставки */
+.delivery-address {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.address-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.address-label {
+    color: #6b7280;
+    min-width: 110px;
+}
+
+.address-value {
+    color: #1f2937;
+    font-weight: 500;
+    flex: 1;
+}
+
+.address-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-left: 118px;
+}
+
+.detail-chip {
+    background: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: #4b5563;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.delivery-time, .courier-comment {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: white;
+    border-radius: 12px;
+    margin-top: 8px;
+}
+
+.time-icon, .comment-icon {
+    font-size: 16px;
+}
+
+.time-text, .comment-text {
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.delivery-cost {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px dashed #e5e7eb;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.delivery-cost strong {
+    color: #00a046;
+}
+
+/* Итого */
+.summary-items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.summary-row.total {
+    padding-top: 12px;
+    border-top: 2px solid #e5e7eb;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1f2937;
+}
+
+.total-price {
+    color: #00a046;
+    font-size: 18px;
+}
+
+/* Кнопка перехода к заказу */
+.view-order-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px;
+    background: linear-gradient(135deg, #00a046 0%, #00853b 100%);
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 8px;
+}
+
+.view-order-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 160, 70, 0.3);
+    gap: 15px;
+}
+
+.view-order-btn svg {
+    transition: transform 0.2s;
+}
+
+.view-order-btn:hover svg {
+    transform: translateX(4px);
+}
+
+/* Загрузка */
+.orders-loading {
+    text-align: center;
+    padding: 80px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #00a046;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Пустое состояние */
+.orders-empty {
+    text-align: center;
+    padding: 60px 40px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.empty-animation {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 24px;
+}
+
+.empty-icon {
+    font-size: 80px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.empty-dots {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+}
+
+.empty-dots::before,
+.empty-dots::after,
+.empty-dots {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: #00a046;
+    border-radius: 50%;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.empty-dots::before {
+    transform: translateX(-10px);
+    animation-delay: 0.2s;
+}
+
+.empty-dots::after {
+    transform: translateX(10px);
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.orders-empty h3 {
+    font-size: 22px;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+.orders-empty p {
+    color: #6b7280;
+    margin-bottom: 32px;
+}
+
+.empty-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 28px;
+    background: #00a046;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.empty-back-btn:hover {
+    background: #00853b;
+    gap: 15px;
+    transform: translateY(-2px);
+}
+
+/* Адаптив */
+@media (max-width: 700px) {
+    .orders-container {
+        padding: 0 16px;
+    }
+
+    .orders-title {
+        font-size: 24px;
+    }
+
+    .accordion-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .accordion-header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .address-line {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .address-details {
+        margin-left: 0;
+    }
+
+    .address-label {
+        min-width: auto;
+    }
+
+    .delivery-card, .summary-card {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .orders-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .order-badge {
+        padding: 4px 10px;
+    }
+
+    .badge-number {
+        font-size: 12px;
+    }
+
+    .price-value {
+        font-size: 16px;
+    }
+
+    .order-status-badge {
+        padding: 4px 10px;
+        font-size: 11px;
+    }
+
+    .content-inner {
+        padding: 0 16px 20px 16px;
+    }
+}

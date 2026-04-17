@@ -149,3 +149,33 @@
 .mobile-menu-link.login:hover {
     background: #388e3c;
 }
+
+/* Добавь в существующий файл */
+
+.mobile-menu-items {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mobile-menu-link {
+    padding: 14px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--gray-800);
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    border-bottom: 1px solid var(--gray-100);
+    transition: all 0.2s;
+}
+
+.mobile-menu-link:hover {
+    color: var(--green);
+    padding-left: 24px;
+}
+
+.mobile-menu-link.orders {
+    color: var(--green);
+}
