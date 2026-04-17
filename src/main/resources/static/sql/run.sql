@@ -183,3 +183,31 @@ INSERT INTO product_attribute_values (product_id, attribute_id, value, unit) VAL
 (29, (SELECT attribute_id FROM attributes WHERE code = 'material'), 'Пластик', NULL),
 (29, (SELECT attribute_id FROM attributes WHERE code = 'power'), '700', 'Вт'),
 (29, (SELECT attribute_id FROM attributes WHERE code = 'programs_count'), '8', NULL);
+
+
+INSERT INTO payment_methods (code, name, description, icon_url) VALUES
+                                                                    ('CARD_ONLINE', 'Оплата картой онлайн', 'Безопасная оплата банковской картой VISA/MasterCard/Mир', '/icons/card_online.svg'),
+                                                                    ('CASH', 'Наличные курьеру', 'Оплата наличными при получении', '/icons/cash.svg'),
+                                                                    ('CARD_TO_COURIER', 'Картой курьеру', 'Оплата банковской картой курьеру при получении', '/icons/card_courier.svg'),
+                                                                    ('SBP', 'СБП', 'Оплата через Систему быстрых платежей', '/icons/sbp.svg'),
+                                                                    ('YANDEX_PAY', 'Яндекс Пэй', 'Оплата через Яндекс Пэй', '/icons/yandex_pay.svg');
+
+INSERT INTO deliveries (client_id, city, street, house, apartment, entrance, floor, intercom, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+                                                                                                                                                                          (1, 'Москва', 'Тверская', '15', '42', '1', 5, '42К', '09:00:00', '18:00:00', 'Позвонить за 15 минут', 'DELIVERED'),
+                                                                                                                                                                          (1, 'Москва', 'Ленина', '10', '5', NULL, 2, NULL, '10:00:00', '20:00:00', 'Оставить у соседей 5', 'PENDING'),
+                                                                                                                                                                          (1, 'Москва', 'Арбат', '25', '7', '2', 3, '25Б', '11:00:00', '19:00:00', 'Домофон не работает', 'IN_TRANSIT');
+
+INSERT INTO orders (order_id, order_date, client_id, total_amount, payment_method_id, delivery_price, delivery_id) VALUES
+                                                                                                                       (1001, '2026-04-01 10:15:00', 1, 5496, 1, 300, 1),
+                                                                                                                       (1002, '2026-04-05 14:30:00', 1, 29998, 2, 500, 2),
+                                                                                                                       (1003, '2026-04-10 18:45:00', 1, 11497, 3, 0, 3);
+
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            (1001, 1, 2, 1299),
+                                                                            (1001, 4, 1, 999),
+                                                                            (1001, 6, 1, 1899),
+                                                                            (1002, 16, 1, 19999),
+                                                                            (1002, 17, 1, 9999),
+                                                                            (1003, 27, 1, 4999),
+                                                                            (1003, 28, 1, 2499),
+                                                                            (1003, 31, 1, 3999);
