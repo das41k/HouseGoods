@@ -63,6 +63,5 @@ public class OrderMapper {
                 .quantity(orderItem.getQuantity())
                 .imgURl(product.getImageURl())
                 .build();
-
     }
 }
