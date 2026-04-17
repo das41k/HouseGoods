@@ -7,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +24,14 @@ public class FavoriteController {
         log.debug("GET /api/favorites/my");
         String email = clientDetails.getUsername();
         return ResponseEntity.ok(favoritesService.getMyFavorites(email));
+    }
+
+    @PostMapping("/{sku}")
+    public ResponseEntity<?> saveNewFavorite(@PathVariable String sku,
+            @AuthenticationPrincipal ClientDetails clientDetails) {
+        log.debug("POST /api/favorites/sku : {}", sku);
+        String email = clientDetails.getUsername();
+        favoritesService.saveNewFavorite(email, sku);
+        return ResponseEntity.ok("Товар был успешно добавлен в избранное");
     }
 }

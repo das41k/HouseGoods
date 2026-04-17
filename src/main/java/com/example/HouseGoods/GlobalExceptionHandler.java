@@ -119,7 +119,7 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage());
         Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
-        response.put("status", HttpStatus.FORBIDDEN);
+        response.put("status", HttpStatus.BAD_REQUEST);
         response.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
