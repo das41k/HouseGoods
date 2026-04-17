@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "favorites",
         uniqueConstraints = @UniqueConstraint(columnNames = {"client_id", "product_id"}))
 @Data
-public class Favorites {
+public class Favorite {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
