@@ -211,3 +211,10 @@ INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
                                                                             (1003, 27, 1, 4999),
                                                                             (1003, 28, 1, 2499),
                                                                             (1003, 31, 1, 3999);
+
+-- Добавляем избранные товары для клиента с ID = 1 (armen@mail.ru)
+INSERT INTO favorites (client_id, product_id, date_added) VALUES
+                                                              (1, 1, NOW()),        -- Сковорода антипригарная 28см
+                                                              (1, 6, NOW()),        -- Электрочайник 1.7л
+                                                              (1, 11, NOW()),       -- Диван угловой
+                                                              (1, 16, NOW());       -- Кровать двуспальная
