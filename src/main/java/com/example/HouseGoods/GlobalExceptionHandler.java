@@ -1,6 +1,7 @@
 package com.example.HouseGoods;
 
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
+import com.example.HouseGoods.favorites.exception.FavoriteIsAlreadyException;
 import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
 import com.example.HouseGoods.orders.exception.OrderNotFoundException;
 import com.example.HouseGoods.products.exception.BrandNotFoundException;
@@ -10,7 +11,6 @@ import com.example.HouseGoods.products.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -112,5 +112,15 @@ public class GlobalExceptionHandler {
         response.put("status", HttpStatus.FORBIDDEN);
         response.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(FavoriteIsAlreadyException.class)
+    public ResponseEntity<Map<String, Object>> handleFavoriteIsAlreadyException(FavoriteIsAlreadyException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.FORBIDDEN);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
