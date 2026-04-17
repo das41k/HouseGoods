@@ -3,7 +3,10 @@ package com.example.HouseGoods.orders.service;
 import com.example.HouseGoods.client.Client;
 import com.example.HouseGoods.client.ClientRepository;
 import com.example.HouseGoods.orders.Order;
+import com.example.HouseGoods.orders.dto.OrderResponse;
 import com.example.HouseGoods.orders.dto.OrderResponseByUser;
+import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
+import com.example.HouseGoods.orders.exception.OrderNotFoundException;
 import com.example.HouseGoods.orders.mapper.OrderMapper;
 import com.example.HouseGoods.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +32,14 @@ public class OrderService {
         return orders.stream()
                 .map(orderMapper::mappingByOrderResponseByUser)
                 .toList();
+    }
+
+    public OrderResponse getOrderById(Long orderId, String email) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException("Заказ не был найден!"));
+        if (!order.getClient().getEmail().equals(email)) {
+            throw new OrderIsNotAlreadyClient("У вас нет доступа к данному заказу!");
+        }
+        return orderMapper.mappingByOrderResponse(order);
     }
 }
