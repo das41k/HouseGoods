@@ -31,14 +31,14 @@ public class Order {
     private List<OrderItem> orderItems;
 
     @Column(name = "total_amount")
-    private Integer totalAmount;
+    private Double totalAmount;
 
     @ManyToOne
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
     @Column(name = "delivery_price")
-    private Integer deliveryPrice;
+    private Double deliveryPrice;
 
     @ManyToOne
     @JoinColumn(name = "delivery_id")

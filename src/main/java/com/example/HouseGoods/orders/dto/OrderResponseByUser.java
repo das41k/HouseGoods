@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class OrderResponseByUser {
     private Long orderId;
     private LocalDateTime orderDate;
-    private Integer totalAmount;
-    private Integer deliveryAmount;
+    private Double totalAmount;
+    private Double deliveryAmount;
     private DeliveryResponse deliveryInfo;
 }

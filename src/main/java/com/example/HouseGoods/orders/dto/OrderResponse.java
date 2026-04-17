@@ -14,8 +14,8 @@ import java.util.List;
 @Builder
 public class OrderResponse {
     private LocalDateTime orderDate;
-    private Integer totalAmount;
-    private Integer deliveryAmount;
+    private Double totalAmount;
+    private Double deliveryAmount;
     private DeliveryResponse deliveryInfo;
     private String paymentMethodTitle;
     private String paymentMethodURl;
