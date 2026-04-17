@@ -36,6 +36,15 @@ function NavMenu({ isMenuOpen, setMenuOpen }) {
         navigate('/login')
     }
 
+    const handleOrdersClick = () => {
+        setMenuOpen(false)
+        if (isLoggedIn) {
+            navigate('/orders')
+        } else {
+            navigate('/login')
+        }
+    }
+
     const handleLogout = () => {
         localStorage.removeItem('token')
         localStorage.removeItem('userLogin')
@@ -95,6 +104,13 @@ function NavMenu({ isMenuOpen, setMenuOpen }) {
                     <button className="mobile-menu-link" onClick={() => handleLinkClick('countries-section')}>
                         Страны
                     </button>
+
+                    {/* Кнопка "Мои заказы" - видна только авторизованным */}
+                    {isLoggedIn && (
+                        <button className="mobile-menu-link orders" onClick={handleOrdersClick}>
+                            Мои заказы
+                        </button>
+                    )}
                 </div>
 
                 <div className="mobile-menu-footer">

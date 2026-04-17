@@ -13,6 +13,10 @@ export default defineConfig({
             '/images': {
                 target: 'http://localhost:3333',
                 changeOrigin: true,
+            },
+            '/icons': {
+                target: 'http://localhost:3333',
+                changeOrigin: true,
             }
         }
     }
