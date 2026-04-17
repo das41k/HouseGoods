@@ -26,5 +26,5 @@ public class OrderItem {
     private Integer quantity;
 
     @Column(name = "price_at_time")
-    private Integer priceAtTime;
+    private Double priceAtTime;
 }
