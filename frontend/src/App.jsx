@@ -12,6 +12,7 @@ import AdminPage from './pages/AdminPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ForbiddenPage from './pages/ForbiddenPage'
 import OrdersPage from './pages/OrdersPage'
+import OrderDetailsPage from './pages/OrderDetailsPage'
 import './App.css'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/orders" element={<OrdersPage />} />
+                    <Route path="/order/:id" element={<OrderDetailsPage />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/403" element={<ForbiddenPage />} />
                     <Route path="*" element={<NotFoundPage />} />
