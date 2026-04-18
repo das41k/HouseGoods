@@ -44,4 +44,13 @@ public class BasketController {
         basketService.reductionCountBasketItem(request,email);
         return ResponseEntity.ok("Количество товара было изменено!");
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBasketItem(@PathVariable Long id,
+                             @AuthenticationPrincipal ClientDetails clientDetails) {
+        log.debug("DELETE /api/baskets/" + id);
+        String email = clientDetails.getUsername();
+        basketService.deleteItemWithBasket(id, email);
+        return ResponseEntity.ok("Товар был успешно удален из корзины!");
+    }
 }

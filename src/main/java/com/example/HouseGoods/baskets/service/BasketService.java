@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -96,5 +97,20 @@ public class BasketService {
         basket.setUpdatedAt(LocalDateTime.now());
         basketRepository.save(basket);
         basketItemRepository.save(item);
+    }
+
+    public void deleteItemWithBasket(Long itemId, String email) {
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не был найден!"));
+        Basket basket = basketRepository.findByClient(client)
+                .orElseThrow(() -> new BasketNotFoundException("Корзина не была найдена!"));
+        BasketItem item = basket.getBasketItems().stream()
+                .filter(it -> Objects.equals(it.getId(), itemId))
+                .findFirst()
+                .orElseThrow(() -> new ProductNotFoundException("Товар не был найден в корзине!"));
+        basketItemRepository.delete(item);
+        basket.getBasketItems().remove(item);
+        basket.setUpdatedAt(LocalDateTime.now());
+        basketRepository.save(basket);
     }
 }

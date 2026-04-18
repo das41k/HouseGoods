@@ -30,6 +30,7 @@ public class BasketMapper {
     public BasketItemResponse toBasketItemResponse(BasketItem item) {
         Product product = item.getProduct();
         return BasketItemResponse.builder()
+                .itemId(item.getId())
                 .sku(product.getSku())
                 .name(product.getName())
                 .imgURl(product.getImageURl())
