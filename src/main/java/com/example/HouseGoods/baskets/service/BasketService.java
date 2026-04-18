@@ -19,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -44,22 +47,40 @@ public class BasketService {
         log.info("Работа BasketService.addNewItemWithBasket(BasketAddedItemRequest request, String email)");
         Client client = clientRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не был найден!"));
-        Basket basket = basketRepository.findByClient(client)
-                .orElseThrow(() -> new BasketNotFoundException("Корзина не была найдена!"));
         Product product = productRepository.findBySku(request.getSku())
                 .orElseThrow(() -> new ProductNotFoundException("Товар не был найден!"));
-        Optional<BasketItem> item = basket.getBasketItems().stream()
+        Basket basket = basketRepository.findByClient(client)
+                .orElseGet(() -> createNewBasket(client));
+
+        Optional<BasketItem> existingItem = basket.getBasketItems().stream()
                 .filter(it -> it.getProduct().getSku().equals(request.getSku()))
                 .findFirst();
-        if (item.isPresent()) {
-            throw new ProductIsFoundException("Товар уже есть в корзине!");
+        if (existingItem.isPresent()) {
+            BasketItem item = existingItem.get();
+            int newQuantity = item.getQuantity() + request.getQuantity();
+            item.setQuantity(newQuantity);
+            basketItemRepository.save(item);
+            log.info("Обновлено количество товара {}: {}", product.getSku(), newQuantity);
+        } else {
+            BasketItem newItem = new BasketItem();
+            newItem.setBasket(basket);
+            newItem.setProduct(product);
+            newItem.setQuantity(request.getQuantity());
+            newItem.setPriceAtAddTime(basketMapper.getPriceByBasketItem(product, request.getQuantity()));
+            basketItemRepository.save(newItem);
+            log.info("Добавлен новый товар {}: {}", product.getSku(), request.getQuantity());
         }
+        basket.setUpdatedAt(LocalDateTime.now());
+        basketRepository.save(basket);
+    }
 
-        BasketItem basketItem = new BasketItem();
-        basketItem.setProduct(product);
-        basketItem.setBasket(basket);
-        basketItem.setQuantity(request.getQuantity());
-        basketItem.setPriceAtAddTime(basketMapper.getPriceByBasketItem(product, request.getQuantity()));
-        basketItemRepository.save(basketItem);
+    public Basket createNewBasket(Client client) {
+        Basket basket = new  Basket();
+        basket.setClient(client);
+        basket.setCreatedAt(LocalDateTime.now());
+        basket.setUpdatedAt(LocalDateTime.now());
+        basket.setBasketItems(Collections.emptyList());
+        basketRepository.save(basket);
+        return basket;
     }
 }
