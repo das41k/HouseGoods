@@ -27,8 +27,4 @@ public class BasketItem {
     @Column(name = "price_at_add_time")
     private Double priceAtAddTime;
 
-    public Double getSubtotal() {
-        return priceAtAddTime * quantity;
-    }
-
 }

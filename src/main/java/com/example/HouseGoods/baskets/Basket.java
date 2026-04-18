@@ -1,10 +1,12 @@
 package com.example.HouseGoods.baskets;
 
+import com.example.HouseGoods.baskets.entity.BasketItem;
 import com.example.HouseGoods.client.Client;
 import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "baskets")
@@ -24,4 +26,7 @@ public class Basket {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "basket")
+    private List<BasketItem> basketItems;
 }
