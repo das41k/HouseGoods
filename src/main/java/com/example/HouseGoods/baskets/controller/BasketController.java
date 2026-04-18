@@ -1,5 +1,6 @@
 package com.example.HouseGoods.baskets.controller;
 
+import com.example.HouseGoods.baskets.dto.BasketAddedItemRequest;
 import com.example.HouseGoods.baskets.dto.BasketResponse;
 import com.example.HouseGoods.baskets.service.BasketService;
 import com.example.HouseGoods.security.authorization.ClientDetails;
@@ -7,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/baskets")
@@ -24,5 +23,15 @@ public class BasketController {
         log.debug("GET /api/baskets/my");
         String email = clientDetails.getUsername();
         return ResponseEntity.ok(basketService.getMyBasket(email));
+    }
+
+    @PostMapping
+    public ResponseEntity<?> addNewItemWithBasket(
+            @AuthenticationPrincipal ClientDetails clientDetails,
+            @RequestBody BasketAddedItemRequest request) {
+        log.debug("POST /api/baskets");
+        String email = clientDetails.getUsername();
+        basketService.addNewItemWithBasket(request,email);
+        return ResponseEntity.ok("Товар был успешно добавлен в корзину!");
     }
 }

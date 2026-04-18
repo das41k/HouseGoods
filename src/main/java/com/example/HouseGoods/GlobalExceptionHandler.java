@@ -2,6 +2,7 @@ package com.example.HouseGoods;
 
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
 import com.example.HouseGoods.baskets.exception.BasketNotFoundException;
+import com.example.HouseGoods.baskets.exception.ProductIsFoundException;
 import com.example.HouseGoods.favorites.exception.FavoriteIsAlreadyException;
 import com.example.HouseGoods.favorites.exception.FavoriteNotFoundException;
 import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
@@ -11,6 +12,7 @@ import com.example.HouseGoods.products.exception.CategoryNotFoundException;
 import com.example.HouseGoods.products.exception.CountryNotFoundException;
 import com.example.HouseGoods.products.exception.ProductNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.XSlf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -144,5 +146,15 @@ public class GlobalExceptionHandler {
         response.put("status", HttpStatus.NOT_FOUND);
         response.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ProductIsFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleProductIsFoundException(ProductIsFoundException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.BAD_REQUEST);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
