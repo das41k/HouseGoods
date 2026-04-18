@@ -218,3 +218,46 @@ INSERT INTO favorites (client_id, product_id, date_added) VALUES
                                                               (1, 6, NOW()),        -- Электрочайник 1.7л
                                                               (1, 11, NOW()),       -- Диван угловой
                                                               (1, 16, NOW());       -- Кровать двуспальная
+-- Сначала найдем client_id (предполагаю, что это 1)
+
+INSERT INTO baskets (client_id, created_at, updated_at)
+VALUES (
+           1,  -- client_id пользователя armen@mail.ru
+           NOW(),
+           NOW()
+       );
+
+-- Проверим, что создалось
+SELECT * FROM baskets WHERE client_id = 1;
+
+-- Добавляем несколько товаров в корзину пользователя
+-- Сначала узнаем basket_id для client_id = 1
+
+-- Вариант 1: Если знаем basket_id (например, 1)
+INSERT INTO basket_items (basket_id, product_id, quantity, price_at_add_time)
+VALUES
+    (1, 6, 2, 1899),   -- Электрочайник 1.7л, 2 штуки
+    (1, 7, 1, 4999),   -- Микроволновая печь 20л, 1 штука
+    (1, 11, 1, 29999); -- Диван угловой, 1 штука
+
+-- Вариант 2: С подзапросом для автоматического получения basket_id
+INSERT INTO basket_items (basket_id, product_id, quantity, price_at_add_time)
+VALUES
+    (
+        (SELECT basket_id FROM baskets WHERE client_id = 1),
+        26,  -- Заварочный чайник
+        1,
+        1800
+    ),
+    (
+        (SELECT basket_id FROM baskets WHERE client_id = 1),
+        2,   -- Кастрюля нержавейка
+        3,
+        1999
+    ),
+    (
+        (SELECT basket_id FROM baskets WHERE client_id = 1),
+        12,  -- Журнальный столик
+        1,
+        3999
+    );
