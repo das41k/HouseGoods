@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BasketAddedItemRequest {
+public class BasketItemRequest {
     private String sku;
     private Integer quantity;
 }

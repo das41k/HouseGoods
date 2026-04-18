@@ -147,14 +147,4 @@ public class GlobalExceptionHandler {
         response.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
-
-    @ExceptionHandler(ProductIsFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleProductIsFoundException(ProductIsFoundException ex) {
-        log.error(ex.getMessage());
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", ex.getMessage());
-        response.put("status", HttpStatus.BAD_REQUEST);
-        response.put("timestamp", LocalDateTime.now());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
 }

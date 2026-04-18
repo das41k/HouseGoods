@@ -2,10 +2,9 @@ package com.example.HouseGoods.baskets.service;
 
 import com.example.HouseGoods.baskets.Basket;
 import com.example.HouseGoods.baskets.entity.BasketItem;
-import com.example.HouseGoods.baskets.dto.BasketAddedItemRequest;
+import com.example.HouseGoods.baskets.dto.BasketItemRequest;
 import com.example.HouseGoods.baskets.dto.BasketResponse;
 import com.example.HouseGoods.baskets.exception.BasketNotFoundException;
-import com.example.HouseGoods.baskets.exception.ProductIsFoundException;
 import com.example.HouseGoods.baskets.mapper.BasketMapper;
 import com.example.HouseGoods.baskets.repository.BasketItemRepository;
 import com.example.HouseGoods.baskets.repository.BasketRepository;
@@ -20,7 +19,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -43,7 +41,7 @@ public class BasketService {
         return basketMapper.toBasketResponse(basket);
     }
 
-    public void addNewItemWithBasket(BasketAddedItemRequest request, String email) {
+    public void addNewItemWithBasket(BasketItemRequest request, String email) {
         log.info("Работа BasketService.addNewItemWithBasket(BasketAddedItemRequest request, String email)");
         Client client = clientRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не был найден!"));
@@ -74,7 +72,7 @@ public class BasketService {
         basketRepository.save(basket);
     }
 
-    public Basket createNewBasket(Client client) {
+    private Basket createNewBasket(Client client) {
         Basket basket = new  Basket();
         basket.setClient(client);
         basket.setCreatedAt(LocalDateTime.now());
@@ -82,5 +80,21 @@ public class BasketService {
         basket.setBasketItems(Collections.emptyList());
         basketRepository.save(basket);
         return basket;
+    }
+
+    public void reductionCountBasketItem(BasketItemRequest request, String email) {
+        log.info("Работа BasketService: reductionCountBasketItem(BasketItemRequest request, String email)");
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не был найден!"));
+        Basket basket = basketRepository.findByClient(client)
+                .orElseThrow(() -> new BasketNotFoundException("Корзина не была найдена!"));
+        BasketItem item = basket.getBasketItems().stream()
+                .filter(it -> it.getProduct().getSku().equals(request.getSku()))
+                .findFirst()
+                .orElseThrow(() -> new ProductNotFoundException("Товар не был найден в корзине!"));
+        item.setQuantity(item.getQuantity() - request.getQuantity());
+        basket.setUpdatedAt(LocalDateTime.now());
+        basketRepository.save(basket);
+        basketItemRepository.save(item);
     }
 }
