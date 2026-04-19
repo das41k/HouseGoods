@@ -1,17 +1,16 @@
-package com.example.HouseGoods.orders.dto;
+package com.example.HouseGoods.delivery.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
-
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class DeliveryResponse {
+public class AddressResponse {
+    private Long addressId;
     private String city;
     private String street;
     private String house;
@@ -19,8 +18,4 @@ public class DeliveryResponse {
     private String entrance;       // Подъезд
     private Integer floor;         // Этаж
     private String intercom;       // Домофон
-    private LocalTime deliveryTimeFrom;
-    private LocalTime deliveryTimeTo;
-    private String courierComment;
-    private String deliveryStatus;
 }
