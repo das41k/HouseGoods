@@ -395,6 +395,24 @@
     transition: all 0.3s;
 }
 
+
+.cart-item-image {
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.cart-item-image:hover {
+    transform: scale(1.02);
+}
+
+.cart-item-name {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.cart-item-name:hover {
+    color: #00a046;
+}
 .empty-back-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0, 160, 70, 0.3);
