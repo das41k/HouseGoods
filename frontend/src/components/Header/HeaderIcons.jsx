@@ -5,26 +5,9 @@ import './HeaderIcons.css'
 function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
     const navigate = useNavigate()
     const [favoritesCount, setFavoritesCount] = useState(0)
+    const [cartCount, setCartCount] = useState(0)
 
     // Загрузка количества избранного
-    useEffect(() => {
-        if (isLoggedIn) {
-            fetchFavoritesCount()
-        } else {
-            setFavoritesCount(0)
-        }
-
-        // Слушаем событие обновления избранного
-        const handleFavoritesUpdate = () => {
-            fetchFavoritesCount()
-        }
-
-        window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
-        return () => {
-            window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
-        }
-    }, [isLoggedIn])
-
     const fetchFavoritesCount = async () => {
         try {
             const token = localStorage.getItem('token')
@@ -45,6 +28,56 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
         }
     }
 
+    // Загрузка количества товаров в корзине через API
+    const fetchCartCount = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const response = await fetch('/house-goods/api/baskets/my', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                const count = data.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0
+                setCartCount(count)
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки количества корзины:', error)
+        }
+    }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchFavoritesCount()
+            fetchCartCount()
+        } else {
+            setFavoritesCount(0)
+            setCartCount(0)
+        }
+
+        // Слушаем событие обновления избранного
+        const handleFavoritesUpdate = () => {
+            if (isLoggedIn) fetchFavoritesCount()
+        }
+
+        // Слушаем событие обновления корзины
+        const handleCartUpdate = () => {
+            if (isLoggedIn) fetchCartCount()
+        }
+
+        window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
+        window.addEventListener('cartUpdated', handleCartUpdate)
+
+        return () => {
+            window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
+            window.removeEventListener('cartUpdated', handleCartUpdate)
+        }
+    }, [isLoggedIn])
+
     const handleAuthClick = () => {
         if (isLoggedIn) {
             onLogout()
@@ -63,6 +96,10 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
 
     const handleFavoritesClick = () => {
         navigate('/favorites')
+    }
+
+    const handleCartClick = () => {
+        navigate('/cart')
     }
 
     return (
@@ -91,7 +128,7 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
             )}
 
             {/* Корзина */}
-            <button className="icon-btn" aria-label="Корзина">
+            <button className="icon-btn" aria-label="Корзина" onClick={handleCartClick}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 6H20L18 17H8L6 6Z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                     <path d="M6 6L5 3H2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -99,7 +136,7 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
                     <circle cx="17" cy="20" r="1.5" fill="currentColor"/>
                     <path d="M10 9L12 12L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
-                <span className="icon-badge">2</span>
+                {cartCount > 0 && <span className="icon-badge">{cartCount}</span>}
             </button>
 
             {/* Авторизация / Профиль */}
