@@ -145,7 +145,11 @@ function CartPage() {
     }
 
     const handleCheckout = () => {
-        alert('Оформление заказа - в разработке')
+        navigate('/checkout')
+    }
+
+    const handleProductClick = (sku) => {
+        navigate(`/product/${sku}`)
     }
 
     const getTotalItems = () => {
@@ -184,7 +188,10 @@ function CartPage() {
                         <div className="cart-items">
                             {cartItems.map((item) => (
                                 <div key={item.itemId} className="cart-item">
-                                    <div className="cart-item-image">
+                                    <div
+                                        className="cart-item-image"
+                                        onClick={() => handleProductClick(item.sku)}
+                                    >
                                         {item.imgURl ? (
                                             <img src={`/house-goods${item.imgURl}`} alt={item.name} />
                                         ) : (
@@ -192,7 +199,12 @@ function CartPage() {
                                         )}
                                     </div>
                                     <div className="cart-item-info">
-                                        <h3 className="cart-item-name">{item.name}</h3>
+                                        <h3
+                                            className="cart-item-name"
+                                            onClick={() => handleProductClick(item.sku)}
+                                        >
+                                            {item.name}
+                                        </h3>
                                         <div className="cart-item-sku">Артикул: {item.sku}</div>
                                         <div className="cart-item-meta">
                                             {item.category && (
@@ -239,10 +251,6 @@ function CartPage() {
                             <div className="summary-row">
                                 <span>Товары ({getTotalItems()} шт.)</span>
                                 <span>{totalPrice.toLocaleString()} ₽</span>
-                            </div>
-                            <div className="summary-row delivery">
-                                <span>Доставка</span>
-                                <span>Рассчитывается при оформлении</span>
                             </div>
                             <div className="summary-row total">
                                 <span>Итого к оплате</span>

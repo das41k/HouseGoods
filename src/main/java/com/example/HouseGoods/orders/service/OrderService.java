@@ -23,6 +23,7 @@ import com.example.HouseGoods.orders.exception.PaymentMethodNotFound;
 import com.example.HouseGoods.orders.mapper.OrderMapper;
 import com.example.HouseGoods.orders.repository.OrderRepository;
 import com.example.HouseGoods.orders.repository.PaymentMethodRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -101,6 +102,7 @@ public class OrderService {
                 .build();
     }
 
+    @Transactional
     public void createOrder(CreateOrderRequest request, String email) {
         log.info("Работа OrderService: createOrder(CreateOrderRequest request, String email)");
         Client client = clientRepository.findByEmail(email)
