@@ -124,31 +124,46 @@ function ProductPage() {
         setQuantity(value)
     }
 
-    const addToCart = () => {
+    const addToCart = async () => {
+        if (!isLoggedIn) {
+            navigate('/login')
+            return
+        }
+
+        if (!product || product.count === 0) {
+            alert('Товар отсутствует на складе')
+            return
+        }
+
         setAddingToCart(true)
+        try {
+            const response = await fetch('/house-goods/api/baskets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    sku: product.sku,
+                    quantity: quantity
+                })
+            })
 
-        const cartItem = {
-            sku: product.sku,
-            name: product.name,
-            price: product.salePrice || product.basePrice,
-            quantity: quantity,
-            imageUrl: product.imageUrl
+            if (response.ok) {
+                setShowSuccess(true)
+                window.dispatchEvent(new Event('cartUpdated'))
+                setTimeout(() => setShowSuccess(false), 3000)
+            } else {
+                const errorData = await response.json()
+                console.error('Ошибка добавления:', errorData)
+                alert('Не удалось добавить товар в корзину')
+            }
+        } catch (error) {
+            console.error('Ошибка:', error)
+            alert('Не удалось добавить товар в корзину')
+        } finally {
+            setAddingToCart(false)
         }
-
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-        const existingIndex = cart.findIndex(item => item.sku === cartItem.sku)
-
-        if (existingIndex >= 0) {
-            cart[existingIndex].quantity += quantity
-        } else {
-            cart.push(cartItem)
-        }
-
-        localStorage.setItem('cart', JSON.stringify(cart))
-
-        setAddingToCart(false)
-        setShowSuccess(true)
-        setTimeout(() => setShowSuccess(false), 3000)
     }
 
     const discountPercent = product?.salePrice && product?.basePrice

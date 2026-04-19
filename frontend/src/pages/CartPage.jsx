@@ -5,44 +5,139 @@ import './CartPage.css'
 function CartPage() {
     const [cartItems, setCartItems] = useState([])
     const [loading, setLoading] = useState(true)
+    const [totalPrice, setTotalPrice] = useState(0)
     const navigate = useNavigate()
 
+    const token = localStorage.getItem('token')
+    const isLoggedIn = !!token
+
     useEffect(() => {
+        if (!isLoggedIn) {
+            navigate('/login')
+            return
+        }
         loadCart()
     }, [])
 
-    const loadCart = () => {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-        setCartItems(cart)
-        setLoading(false)
+    const loadCart = async () => {
+        setLoading(true)
+        try {
+            const response = await fetch('/house-goods/api/baskets/my', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                setCartItems(data.items || [])
+                setTotalPrice(data.totalPrice || 0)
+            } else {
+                console.error('Ошибка загрузки корзины')
+                setCartItems([])
+            }
+        } catch (error) {
+            console.error('Ошибка:', error)
+            setCartItems([])
+        } finally {
+            setLoading(false)
+        }
     }
 
-    const updateQuantity = (sku, newQuantity) => {
-        if (newQuantity < 1) return
-        const updatedCart = cartItems.map(item =>
-            item.sku === sku ? { ...item, quantity: newQuantity } : item
-        )
-        setCartItems(updatedCart)
-        localStorage.setItem('cart', JSON.stringify(updatedCart))
+    const increaseQuantity = async (sku) => {
+        try {
+            const response = await fetch('/house-goods/api/baskets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    sku: sku,
+                    quantity: 1
+                })
+            })
+
+            if (response.ok) {
+                await loadCart()
+                window.dispatchEvent(new Event('cartUpdated'))
+            }
+        } catch (error) {
+            console.error('Ошибка:', error)
+        }
     }
 
-    const removeItem = (sku) => {
-        const updatedCart = cartItems.filter(item => item.sku !== sku)
-        setCartItems(updatedCart)
-        localStorage.setItem('cart', JSON.stringify(updatedCart))
+    const decreaseQuantity = async (sku, currentQuantity) => {
+        if (currentQuantity <= 1) {
+            await removeItemBySku(sku)
+            return
+        }
+
+        try {
+            const response = await fetch('/house-goods/api/baskets/reduction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    sku: sku,
+                    quantity: 1
+                })
+            })
+
+            if (response.ok) {
+                await loadCart()
+                window.dispatchEvent(new Event('cartUpdated'))
+            }
+        } catch (error) {
+            console.error('Ошибка:', error)
+        }
     }
 
-    const clearCart = () => {
-        setCartItems([])
-        localStorage.setItem('cart', '[]')
+    const removeItemBySku = async (sku) => {
+        const item = cartItems.find(i => i.sku === sku)
+        if (!item) return
+
+        try {
+            const response = await fetch(`/house-goods/api/baskets/${item.itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                await loadCart()
+                window.dispatchEvent(new Event('cartUpdated'))
+            }
+        } catch (error) {
+            console.error('Ошибка:', error)
+        }
     }
 
-    const getTotalPrice = () => {
-        return cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    const removeItem = async (itemId) => {
+        try {
+            const response = await fetch(`/house-goods/api/baskets/${itemId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                await loadCart()
+                window.dispatchEvent(new Event('cartUpdated'))
+            }
+        } catch (error) {
+            console.error('Ошибка:', error)
+        }
     }
 
-    const getTotalItems = () => {
-        return cartItems.reduce((sum, item) => sum + item.quantity, 0)
+    const clearCart = async () => {
+        for (const item of cartItems) {
+            await removeItem(item.itemId)
+        }
     }
 
     const goBack = () => {
@@ -50,13 +145,11 @@ function CartPage() {
     }
 
     const handleCheckout = () => {
-        const token = localStorage.getItem('token')
-        if (!token) {
-            navigate('/login')
-            return
-        }
-        // TODO: переход к оформлению заказа
         alert('Оформление заказа - в разработке')
+    }
+
+    const getTotalItems = () => {
+        return cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0)
     }
 
     if (loading) {
@@ -75,7 +168,6 @@ function CartPage() {
     return (
         <div className="cart-page">
             <div className="cart-container">
-                {/* Хлебные крошки */}
                 <div className="cart-breadcrumb">
                     <button onClick={goBack} className="breadcrumb-link">Главная</button>
                     <span className="breadcrumb-separator">/</span>
@@ -90,11 +182,11 @@ function CartPage() {
                 {cartItems.length > 0 ? (
                     <div className="cart-content">
                         <div className="cart-items">
-                            {cartItems.map((item, idx) => (
-                                <div key={idx} className="cart-item">
+                            {cartItems.map((item) => (
+                                <div key={item.itemId} className="cart-item">
                                     <div className="cart-item-image">
-                                        {item.imageUrl ? (
-                                            <img src={item.imageUrl} alt={item.name} />
+                                        {item.imgURl ? (
+                                            <img src={`/house-goods${item.imgURl}`} alt={item.name} />
                                         ) : (
                                             <div className="image-placeholder">📦</div>
                                         )}
@@ -102,29 +194,35 @@ function CartPage() {
                                     <div className="cart-item-info">
                                         <h3 className="cart-item-name">{item.name}</h3>
                                         <div className="cart-item-sku">Артикул: {item.sku}</div>
-                                        <div className="cart-item-price">{item.price.toLocaleString()} ₽</div>
+                                        <div className="cart-item-meta">
+                                            {item.category && (
+                                                <span className="cart-item-category">{item.category}</span>
+                                            )}
+                                            {item.brand && (
+                                                <span className="cart-item-brand">{item.brand}</span>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="cart-item-quantity">
                                         <button
-                                            onClick={() => updateQuantity(item.sku, item.quantity - 1)}
+                                            onClick={() => decreaseQuantity(item.sku, item.quantity)}
                                             className="qty-btn"
                                         >
                                             -
                                         </button>
-                                        <span className="qty-value">{item.quantity}</span>
+                                        <span className="qty-value">{item.quantity} шт.</span>
                                         <button
-                                            onClick={() => updateQuantity(item.sku, item.quantity + 1)}
+                                            onClick={() => increaseQuantity(item.sku)}
                                             className="qty-btn"
                                         >
                                             +
                                         </button>
                                     </div>
                                     <div className="cart-item-total">
-                                        <span className="total-label">Сумма</span>
-                                        <span className="total-value">{(item.price * item.quantity).toLocaleString()} ₽</span>
+                                        <span className="total-value">{item.price.toLocaleString()} ₽</span>
                                     </div>
                                     <button
-                                        onClick={() => removeItem(item.sku)}
+                                        onClick={() => removeItem(item.itemId)}
                                         className="cart-item-remove"
                                         aria-label="Удалить"
                                     >
@@ -140,7 +238,7 @@ function CartPage() {
                             <h2>Итого</h2>
                             <div className="summary-row">
                                 <span>Товары ({getTotalItems()} шт.)</span>
-                                <span>{getTotalPrice().toLocaleString()} ₽</span>
+                                <span>{totalPrice.toLocaleString()} ₽</span>
                             </div>
                             <div className="summary-row delivery">
                                 <span>Доставка</span>
@@ -148,7 +246,7 @@ function CartPage() {
                             </div>
                             <div className="summary-row total">
                                 <span>Итого к оплате</span>
-                                <span>{getTotalPrice().toLocaleString()} ₽</span>
+                                <span>{totalPrice.toLocaleString()} ₽</span>
                             </div>
                             <button onClick={handleCheckout} className="checkout-btn">
                                 Оформить заказ

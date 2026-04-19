@@ -28,30 +28,45 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
         }
     }
 
-    // Загрузка количества товаров в корзине
-    const loadCartCount = () => {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-        const count = cart.reduce((sum, item) => sum + item.quantity, 0)
-        setCartCount(count)
+    // Загрузка количества товаров в корзине через API
+    const fetchCartCount = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const response = await fetch('/house-goods/api/baskets/my', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                const count = data.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0
+                setCartCount(count)
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки количества корзины:', error)
+        }
     }
 
     useEffect(() => {
         if (isLoggedIn) {
             fetchFavoritesCount()
+            fetchCartCount()
         } else {
             setFavoritesCount(0)
+            setCartCount(0)
         }
-
-        loadCartCount()
 
         // Слушаем событие обновления избранного
         const handleFavoritesUpdate = () => {
-            fetchFavoritesCount()
+            if (isLoggedIn) fetchFavoritesCount()
         }
 
         // Слушаем событие обновления корзины
         const handleCartUpdate = () => {
-            loadCartCount()
+            if (isLoggedIn) fetchCartCount()
         }
 
         window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
