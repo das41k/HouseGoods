@@ -13,6 +13,16 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
         } else {
             setFavoritesCount(0)
         }
+
+        // Слушаем событие обновления избранного
+        const handleFavoritesUpdate = () => {
+            fetchFavoritesCount()
+        }
+
+        window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
+        return () => {
+            window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
+        }
     }, [isLoggedIn])
 
     const fetchFavoritesCount = async () => {

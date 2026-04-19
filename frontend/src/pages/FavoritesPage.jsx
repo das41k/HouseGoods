@@ -69,6 +69,8 @@ function FavoritesPage() {
 
             if (response.ok) {
                 setFavorites(favorites.filter(item => item.sku !== sku))
+                // Обновляем счетчик в хедере через событие
+                window.dispatchEvent(new Event('favoritesUpdated'))
             }
         } catch (error) {
             console.error('Ошибка удаления из избранного:', error)
