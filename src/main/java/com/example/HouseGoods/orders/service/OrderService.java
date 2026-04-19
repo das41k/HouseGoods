@@ -7,15 +7,14 @@ import com.example.HouseGoods.baskets.repository.BasketRepository;
 import com.example.HouseGoods.client.Client;
 import com.example.HouseGoods.client.ClientRepository;
 import com.example.HouseGoods.delivery.Delivery;
+import com.example.HouseGoods.delivery.dto.AddressResponse;
 import com.example.HouseGoods.delivery.dto.DeliveryRequest;
 import com.example.HouseGoods.delivery.entity.Address;
 import com.example.HouseGoods.delivery.entity.DeliveryStatus;
 import com.example.HouseGoods.delivery.exception.AddressNotFoundException;
 import com.example.HouseGoods.delivery.repository.AddressRepository;
 import com.example.HouseGoods.orders.Order;
-import com.example.HouseGoods.orders.dto.CreateOrderRequest;
-import com.example.HouseGoods.orders.dto.OrderResponse;
-import com.example.HouseGoods.orders.dto.OrderResponseByUser;
+import com.example.HouseGoods.orders.dto.*;
 import com.example.HouseGoods.orders.entity.OrderItem;
 import com.example.HouseGoods.orders.entity.PaymentMethod;
 import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
@@ -63,6 +62,43 @@ public class OrderService {
             throw new OrderIsNotAlreadyClient("У вас нет доступа к данному заказу!");
         }
         return orderMapper.mappingByOrderResponse(order);
+    }
+
+    public DataForCreateOrder getDataForCreateOrder(String email) {
+        log.info("Работа OrderService: getDataForCreateOrder(String email)");
+        Client client = clientRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден в системе!"));
+        List<AddressResponse> addresses = addressRepository.findByClient(client)
+                .stream()
+                .map(this::toAddressResponse)
+                .toList();
+        List<PaymentMethodResponse> paymentMethods = paymentMethodRepository.findAll()
+                .stream()
+                .map(this::toPaymentMethodResponse)
+                .toList();
+        return new  DataForCreateOrder(addresses, paymentMethods);
+    }
+
+    private AddressResponse toAddressResponse(Address address) {
+        return AddressResponse.builder()
+                .addressId(address.getAddressId())
+                .city(address.getCity())
+                .street(address.getStreet())
+                .house(address.getHouse())
+                .apartment(address.getApartment())
+                .entrance(address.getEntrance())
+                .floor(address.getFloor())
+                .intercom(address.getIntercom())
+                .build();
+    }
+
+    private PaymentMethodResponse toPaymentMethodResponse(PaymentMethod paymentMethod) {
+        return PaymentMethodResponse.builder()
+                .name(paymentMethod.getName())
+                .code(paymentMethod.getCode())
+                .description(paymentMethod.getDescription())
+                .iconUrl(paymentMethod.getIconUrl())
+                .build();
     }
 
     public void createOrder(CreateOrderRequest request, String email) {

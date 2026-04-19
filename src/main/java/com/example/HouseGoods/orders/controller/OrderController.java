@@ -1,6 +1,7 @@
 package com.example.HouseGoods.orders.controller;
 
 import com.example.HouseGoods.orders.dto.CreateOrderRequest;
+import com.example.HouseGoods.orders.dto.DataForCreateOrder;
 import com.example.HouseGoods.orders.dto.OrderResponse;
 import com.example.HouseGoods.orders.dto.OrderResponseByUser;
 import com.example.HouseGoods.orders.service.OrderService;
@@ -35,6 +36,15 @@ public class OrderController {
         log.debug("GET /api/orders/{}", id);
         String email = clientDetails.getUsername();
         return ResponseEntity.ok(orderService.getOrderById(id, email));
+    }
+
+    @GetMapping("/create")
+    public ResponseEntity<DataForCreateOrder> getDataForCreateOrder(
+            @AuthenticationPrincipal ClientDetails clientDetails
+    ) {
+        log.debug("GET /api/orders/create");
+        String email = clientDetails.getUsername();
+        return ResponseEntity.ok(orderService.getDataForCreateOrder(email));
     }
 
     @PostMapping
