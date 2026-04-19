@@ -1,7 +1,7 @@
 package com.example.HouseGoods.orders;
 
 import com.example.HouseGoods.client.Client;
-import com.example.HouseGoods.orders.entity.Delivery;
+import com.example.HouseGoods.delivery.Delivery;
 import com.example.HouseGoods.orders.entity.OrderItem;
 import com.example.HouseGoods.orders.entity.PaymentMethod;
 import jakarta.persistence.*;

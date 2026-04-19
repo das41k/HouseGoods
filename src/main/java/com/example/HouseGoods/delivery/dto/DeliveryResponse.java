@@ -1,4 +1,4 @@
-package com.example.HouseGoods.orders.dto;
+package com.example.HouseGoods.delivery.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

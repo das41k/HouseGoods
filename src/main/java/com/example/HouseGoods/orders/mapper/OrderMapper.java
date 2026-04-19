@@ -1,11 +1,11 @@
 package com.example.HouseGoods.orders.mapper;
 
 import com.example.HouseGoods.orders.Order;
-import com.example.HouseGoods.orders.dto.DeliveryResponse;
+import com.example.HouseGoods.delivery.dto.DeliveryResponse;
 import com.example.HouseGoods.orders.dto.OrderResponse;
 import com.example.HouseGoods.orders.dto.OrderResponseByUser;
 import com.example.HouseGoods.orders.dto.ProductByOrder;
-import com.example.HouseGoods.orders.entity.Delivery;
+import com.example.HouseGoods.delivery.Delivery;
 import com.example.HouseGoods.orders.entity.OrderItem;
 import com.example.HouseGoods.products.Product;
 import org.springframework.stereotype.Component;

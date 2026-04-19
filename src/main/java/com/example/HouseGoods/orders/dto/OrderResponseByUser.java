@@ -1,5 +1,6 @@
 package com.example.HouseGoods.orders.dto;
 
+import com.example.HouseGoods.delivery.dto.DeliveryResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

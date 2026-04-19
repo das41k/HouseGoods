@@ -1,20 +1,15 @@
-package com.example.HouseGoods.orders.entity;
+package com.example.HouseGoods.delivery.entity;
 
 import com.example.HouseGoods.client.Client;
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.time.LocalTime;
 
 @Entity
-@Table(name = "deliveries")
-@Data
-public class Delivery {
-
+@Table(name = "addresses")
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "delivery_id")
-    private Long deliveryId;
+    @Column(name = "address_id")
+    private Long addressId;
 
     @ManyToOne
     @JoinColumn(name = "client_id")
@@ -40,16 +35,4 @@ public class Delivery {
 
     @Column(name = "intercom")
     private String intercom;       // Домофон
-
-    @Column(name = "delivery_time_from")
-    private LocalTime deliveryTimeFrom;
-
-    @Column(name = "delivery_time_to")
-    private LocalTime deliveryTimeTo;
-
-    @Column(name = "courier_comment")
-    private String courierComment;
-
-    @Enumerated(EnumType.STRING)
-    private DeliveryStatus deliveryStatus;
 }
