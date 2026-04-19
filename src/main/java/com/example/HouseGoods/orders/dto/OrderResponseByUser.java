@@ -1,5 +1,6 @@
 package com.example.HouseGoods.orders.dto;
 
+import com.example.HouseGoods.delivery.dto.DeliveryResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,5 @@ public class OrderResponseByUser {
     private Long orderId;
     private LocalDateTime orderDate;
     private Double totalAmount;
-    private Double deliveryAmount;
     private DeliveryResponse deliveryInfo;
 }

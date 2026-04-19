@@ -1,5 +1,6 @@
 package com.example.HouseGoods.orders.dto;
 
+import com.example.HouseGoods.delivery.dto.DeliveryResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,6 @@ import java.util.List;
 public class OrderResponse {
     private LocalDateTime orderDate;
     private Double totalAmount;
-    private Double deliveryAmount;
     private DeliveryResponse deliveryInfo;
     private String paymentMethodTitle;
     private String paymentMethodURl;

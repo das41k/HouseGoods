@@ -3,10 +3,12 @@ package com.example.HouseGoods;
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
 import com.example.HouseGoods.baskets.exception.BasketNotFoundException;
 import com.example.HouseGoods.baskets.exception.ProductIsFoundException;
+import com.example.HouseGoods.delivery.exception.AddressNotFoundException;
 import com.example.HouseGoods.favorites.exception.FavoriteIsAlreadyException;
 import com.example.HouseGoods.favorites.exception.FavoriteNotFoundException;
 import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
 import com.example.HouseGoods.orders.exception.OrderNotFoundException;
+import com.example.HouseGoods.orders.exception.PaymentMethodNotFound;
 import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
 import com.example.HouseGoods.products.exception.CountryNotFoundException;
@@ -140,6 +142,26 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BasketNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleBasketNotFoundException(BasketNotFoundException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(PaymentMethodNotFound.class)
+    public ResponseEntity<Map<String, Object>> handlePaymentMethodNotFound(PaymentMethodNotFound ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AddressNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleAddressNotFoundException(AddressNotFoundException ex) {
         log.error(ex.getMessage());
         Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
