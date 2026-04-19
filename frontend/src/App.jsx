@@ -13,6 +13,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import ForbiddenPage from './pages/ForbiddenPage'
 import OrdersPage from './pages/OrdersPage'
 import OrderDetailsPage from './pages/OrderDetailsPage'
+import FavoritesPage from './pages/FavoritesPage'
 import './App.css'
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/orders" element={<OrdersPage />} />
                     <Route path="/order/:id" element={<OrderDetailsPage />} />
+                    <Route path="/favorites" element={<FavoritesPage />} />
                     <Route path="/admin" element={<AdminPage />} />
                     <Route path="/403" element={<ForbiddenPage />} />
                     <Route path="*" element={<NotFoundPage />} />
