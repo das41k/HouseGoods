@@ -2,9 +2,11 @@ package com.example.HouseGoods.delivery.entity;
 
 import com.example.HouseGoods.client.Client;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "addresses")
+@Data
 public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

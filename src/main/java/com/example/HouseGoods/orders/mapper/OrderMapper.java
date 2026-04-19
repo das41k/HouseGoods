@@ -17,25 +17,24 @@ public class OrderMapper {
                 .orderId(order.getOrderId())
                 .orderDate(order.getOrderDate())
                 .totalAmount(order.getTotalAmount())
-                .deliveryAmount(order.getDeliveryPrice())
-                .deliveryInfo(mappingByDeliveryResponse(order.getDelivery(), false))
+                .deliveryInfo(mappingByDeliveryResponse(order.getDelivery()))
                 .build();
     }
 
-    public DeliveryResponse mappingByDeliveryResponse(Delivery delivery, boolean withCommence) {
-        String commence = withCommence ? delivery.getCourierComment() : null;
+    public DeliveryResponse mappingByDeliveryResponse(Delivery delivery) {
         return DeliveryResponse.builder()
-                .city(delivery.getCity())
-                .street(delivery.getStreet())
-                .house(delivery.getHouse())
-                .apartment(delivery.getApartment())
-                .entrance(delivery.getEntrance())
-                .floor(delivery.getFloor())
-                .intercom(delivery.getIntercom())
+                .deliveryPrice(delivery.getDeliveryPrice())
+                .city(delivery.getAddress().getCity())
+                .street(delivery.getAddress().getStreet())
+                .house(delivery.getAddress().getHouse())
+                .apartment(delivery.getAddress().getApartment())
+                .entrance(delivery.getAddress().getEntrance())
+                .floor(delivery.getAddress().getFloor())
+                .intercom(delivery.getAddress().getIntercom())
                 .deliveryTimeTo(delivery.getDeliveryTimeTo())
                 .deliveryTimeFrom(delivery.getDeliveryTimeFrom())
-                .deliveryStatus(delivery.getDeliveryStatus().name())
-                .courierComment(commence)
+                .courierComment(delivery.getCourierComment())
+                .deliveryStatus(delivery.getDeliveryStatus().toString())
                 .build();
     }
 
@@ -43,8 +42,7 @@ public class OrderMapper {
         return OrderResponse.builder()
                 .orderDate(order.getOrderDate())
                 .totalAmount(order.getTotalAmount())
-                .deliveryAmount(order.getDeliveryPrice())
-                .deliveryInfo(mappingByDeliveryResponse(order.getDelivery(), true))
+                .deliveryInfo(mappingByDeliveryResponse(order.getDelivery()))
                 .paymentMethodTitle(order.getPaymentMethod().getName())
                 .paymentMethodURl(order.getPaymentMethod().getIconUrl())
                 .products(order.getOrderItems()

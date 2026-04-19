@@ -192,26 +192,6 @@ INSERT INTO payment_methods (code, name, description, icon_url) VALUES
                                                                     ('SBP', 'СБП', 'Оплата через Систему быстрых платежей', '/icons/sbp.svg'),
                                                                     ('YANDEX_PAY', 'Яндекс Пэй', 'Оплата через Яндекс Пэй', '/icons/yandex_pay.svg');
 
-INSERT INTO deliveries (client_id, city, street, house, apartment, entrance, floor, intercom, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
-                                                                                                                                                                          (1, 'Москва', 'Тверская', '15', '42', '1', 5, '42К', '09:00:00', '18:00:00', 'Позвонить за 15 минут', 'DELIVERED'),
-                                                                                                                                                                          (1, 'Москва', 'Ленина', '10', '5', NULL, 2, NULL, '10:00:00', '20:00:00', 'Оставить у соседей 5', 'PENDING'),
-                                                                                                                                                                          (1, 'Москва', 'Арбат', '25', '7', '2', 3, '25Б', '11:00:00', '19:00:00', 'Домофон не работает', 'IN_TRANSIT');
-
-INSERT INTO orders (order_id, order_date, client_id, total_amount, payment_method_id, delivery_price, delivery_id) VALUES
-                                                                                                                       (1001, '2026-04-01 10:15:00', 1, 5496, 1, 300, 1),
-                                                                                                                       (1002, '2026-04-05 14:30:00', 1, 29998, 2, 500, 2),
-                                                                                                                       (1003, '2026-04-10 18:45:00', 1, 11497, 3, 0, 3);
-
-INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
-                                                                            (1001, 1, 2, 1299),
-                                                                            (1001, 4, 1, 999),
-                                                                            (1001, 6, 1, 1899),
-                                                                            (1002, 16, 1, 19999),
-                                                                            (1002, 17, 1, 9999),
-                                                                            (1003, 27, 1, 4999),
-                                                                            (1003, 28, 1, 2499),
-                                                                            (1003, 31, 1, 3999);
-
 -- Добавляем избранные товары для клиента с ID = 1 (armen@mail.ru)
 INSERT INTO favorites (client_id, product_id, date_added) VALUES
                                                               (1, 1, NOW()),        -- Сковорода антипригарная 28см
@@ -261,3 +241,94 @@ VALUES
         1,
         3999
     );
+
+-- =====================================================
+-- 2. ДОБАВЛЕНИЕ АДРЕСОВ ДЛЯ ПОЛЬЗОВАТЕЛЯ С ID = 1
+-- =====================================================
+
+INSERT INTO addresses (client_id, city, street, house, apartment, entrance, floor, intercom) VALUES
+                                                                                                 (1, 'Москва', 'Тверская', '15', '47', '2', 5, '47К'),
+                                                                                                 (1, 'Москва', 'Арбат', '25', '12', '1', 3, '12'),
+                                                                                                 (1, 'Санкт-Петербург', 'Невский проспект', '88', '156', '3', 7, '156B'),
+                                                                                                 (1, 'Москва', 'Ленинский проспект', '123', '78', '1', 9, '78'),
+                                                                                                 (1, 'Красногорск', 'Речная', '8', '34', NULL, 2, '34');
+-- Заказ №1 (Оплачен онлайн, доставлен)
+-- Создаем доставку
+INSERT INTO deliveries (address_id, delivery_price, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+    (1, 300.00, '10:00:00', '14:00:00', 'Позвонить за 15 минут', 'DELIVERED');
+
+-- Создаем заказ
+INSERT INTO orders (order_date, client_id, total_amount, payment_method_id, delivery_id) VALUES
+    ('2024-01-15 10:30:00', 1, 4999.00,
+     (SELECT id FROM payment_methods WHERE code = 'CARD_ONLINE'),
+     (SELECT delivery_id FROM deliveries ORDER BY delivery_id DESC LIMIT 1));
+
+-- Добавляем товары в заказ
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 7, 1, 4999.00);  -- Микроволновка
+
+-- Заказ №2 (Оплата наличными, в пути)
+INSERT INTO deliveries (address_id, delivery_price, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+    (2, 300.00, '14:00:00', '18:00:00', 'Осторожно, домофон не работает', 'IN_TRANSIT');
+
+INSERT INTO orders (order_date, client_id, total_amount, payment_method_id, delivery_id) VALUES
+    ('2024-01-20 15:45:00', 1, 1899.00,
+     (SELECT id FROM payment_methods WHERE code = 'CASH'),
+     (SELECT delivery_id FROM deliveries ORDER BY delivery_id DESC LIMIT 1));
+
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 6, 1, 1899.00);  -- Чайник
+
+-- Заказ №3 (Оплата картой курьеру, ожидает)
+INSERT INTO deliveries (address_id, delivery_price, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+    (3, 500.00, '09:00:00', '13:00:00', 'Код домофона 1234', 'PENDING');
+
+INSERT INTO orders (order_date, client_id, total_amount, payment_method_id, delivery_id) VALUES
+    ('2024-02-01 12:00:00', 1, 29999.00,
+     (SELECT id FROM payment_methods WHERE code = 'CARD_TO_COURIER'),
+     (SELECT delivery_id FROM deliveries ORDER BY delivery_id DESC LIMIT 1));
+
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 11, 1, 29999.00);  -- Диван
+
+-- Заказ №4 (Несколько товаров, ожидает)
+INSERT INTO deliveries (address_id, delivery_price, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+    (1, 300.00, '12:00:00', '16:00:00', NULL, 'PENDING');
+
+INSERT INTO orders (order_date, client_id, total_amount, payment_method_id, delivery_id) VALUES
+    ('2024-02-10 09:15:00', 1, 7987.00,
+     (SELECT id FROM payment_methods WHERE code = 'SBP'),
+     (SELECT delivery_id FROM deliveries ORDER BY delivery_id DESC LIMIT 1));
+
+-- Несколько товаров в одном заказе
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 2, 2, 1999.00),   -- Кастрюля 2шт
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 12, 1, 3999.00);  -- Журнальный столик
+
+-- Заказ №5 (Скидочные товары, доставлен)
+INSERT INTO deliveries (address_id, delivery_price, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+    (4, 300.00, '16:00:00', '20:00:00', 'Оставить у двери', 'DELIVERED');
+
+INSERT INTO orders (order_date, client_id, total_amount, payment_method_id, delivery_id) VALUES
+    ('2024-02-15 18:30:00', 1, 4047.00,
+     (SELECT id FROM payment_methods WHERE code = 'YANDEX_PAY'),
+     (SELECT delivery_id FROM deliveries ORDER BY delivery_id DESC LIMIT 1));
+
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 1, 1, 1299.00),   -- Сковорода со скидкой
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 8, 1, 2499.00),   -- Блендер со скидкой
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 26, 1, 1800.00);  -- Чайник стеклянный
+
+-- Заказ №6 (Заказ из нескольких товаров с разными скидками, в пути)
+INSERT INTO deliveries (address_id, delivery_price, delivery_time_from, delivery_time_to, courier_comment, delivery_status) VALUES
+    (5, 400.00, '11:00:00', '15:00:00', '2 этаж, домофона нет', 'IN_TRANSIT');
+
+INSERT INTO orders (order_date, client_id, total_amount, payment_method_id, delivery_id) VALUES
+    ('2024-02-20 11:20:00', 1, 10196.00,
+     (SELECT id FROM payment_methods WHERE code = 'CARD_ONLINE'),
+     (SELECT delivery_id FROM deliveries ORDER BY delivery_id DESC LIMIT 1));
+
+INSERT INTO orders_item (order_id, product_id, quantity, price_at_time) VALUES
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 6, 1, 1899.00),   -- Чайник
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 10, 1, 3999.00),  -- Мясорубка
+                                                                            ((SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1), 3, 2, 1499.00);   -- Набор тарелок 2шт
