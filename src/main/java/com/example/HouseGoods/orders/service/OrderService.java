@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -31,6 +33,7 @@ public class OrderService {
         List<Order> orders = orderRepository.findByClient(client);
         return orders.stream()
                 .map(orderMapper::mappingByOrderResponseByUser)
+                .sorted(Comparator.comparing(OrderResponseByUser::getOrderDate).reversed())
                 .toList();
     }
 
