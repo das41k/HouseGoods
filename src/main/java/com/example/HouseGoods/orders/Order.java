@@ -27,7 +27,7 @@ public class Order {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     @Column(name = "total_amount")
@@ -37,7 +37,7 @@ public class Order {
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
