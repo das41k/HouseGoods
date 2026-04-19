@@ -1,4 +1,4 @@
-package com.example.HouseGoods.orders.entity;
+package com.example.HouseGoods.delivery.entity;
 
 public enum DeliveryStatus {
     PENDING,        // Ожидает
