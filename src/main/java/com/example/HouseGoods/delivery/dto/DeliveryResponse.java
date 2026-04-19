@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Builder
 public class DeliveryResponse {
+    private Double deliveryPrice;
     private String city;
     private String street;
     private String house;

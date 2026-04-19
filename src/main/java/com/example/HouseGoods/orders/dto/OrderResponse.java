@@ -16,7 +16,6 @@ import java.util.List;
 public class OrderResponse {
     private LocalDateTime orderDate;
     private Double totalAmount;
-    private Double deliveryAmount;
     private DeliveryResponse deliveryInfo;
     private String paymentMethodTitle;
     private String paymentMethodURl;

@@ -22,6 +22,9 @@ public class Delivery {
     @JoinColumn(name = "address_id")
     private Address address;
 
+    @Column(name = "delivery_price")
+    private Double deliveryPrice;
+
     @Column(name = "delivery_time_from")
     private LocalTime deliveryTimeFrom;
 

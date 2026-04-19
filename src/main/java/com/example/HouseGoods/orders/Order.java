@@ -37,9 +37,6 @@ public class Order {
     @JoinColumn(name = "payment_method_id")
     private PaymentMethod paymentMethod;
 
-    @Column(name = "delivery_price")
-    private Double deliveryPrice;
-
     @ManyToOne
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
