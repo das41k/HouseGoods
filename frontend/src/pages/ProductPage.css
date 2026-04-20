@@ -81,6 +81,28 @@
     margin: 0 auto;
 }
 
+/* Плейсхолдер для отсутствующего изображения */
+.pg-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: #f5f5f5;
+    color: #999;
+}
+
+.pg-image-placeholder svg {
+    width: 80px;
+    height: 80px;
+}
+
+.pg-image-placeholder span {
+    font-size: 14px;
+}
+
 .pg-sale-badge {
     position: absolute;
     top: 16px;
@@ -101,11 +123,41 @@
     gap: 20px;
 }
 
+/* Заголовок с кнопкой избранного */
+.pg-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
 .pg-title {
     font-size: 32px;
     font-weight: 700;
     color: #333;
     margin: 0;
+}
+
+.pg-favorite-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.pg-favorite-btn:hover {
+    transform: scale(1.1);
+}
+
+.pg-favorite-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .pg-meta {
@@ -200,6 +252,7 @@
     border-radius: 8px;
     font-size: 18px;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
 .pg-qty-btn:hover:not(:disabled) {
@@ -269,6 +322,7 @@
     border-radius: 6px;
     cursor: pointer;
     font-size: 13px;
+    transition: background 0.2s;
 }
 
 .pg-success-btn:hover {
@@ -415,6 +469,11 @@
     .pg-spec-value {
         text-align: left;
     }
+
+    .pg-image-placeholder svg {
+        width: 60px;
+        height: 60px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -433,5 +492,14 @@
 
     .pg-cart-btn {
         width: 100%;
+    }
+
+    .pg-image-placeholder svg {
+        width: 50px;
+        height: 50px;
+    }
+
+    .pg-image-placeholder span {
+        font-size: 12px;
     }
 }

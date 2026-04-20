@@ -1,9 +1,82 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './HeaderIcons.css'
 
 function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
     const navigate = useNavigate()
+    const [favoritesCount, setFavoritesCount] = useState(0)
+    const [cartCount, setCartCount] = useState(0)
+
+    // Загрузка количества избранного
+    const fetchFavoritesCount = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const response = await fetch('/house-goods/api/favorites/my', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                setFavoritesCount(Array.isArray(data) ? data.length : 0)
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки количества избранного:', error)
+        }
+    }
+
+    // Загрузка количества товаров в корзине через API
+    const fetchCartCount = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const response = await fetch('/house-goods/api/baskets/my', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (response.ok) {
+                const data = await response.json()
+                const count = data.items?.reduce((sum, item) => sum + (item.quantity || 0), 0) || 0
+                setCartCount(count)
+            }
+        } catch (error) {
+            console.error('Ошибка загрузки количества корзины:', error)
+        }
+    }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchFavoritesCount()
+            fetchCartCount()
+        } else {
+            setFavoritesCount(0)
+            setCartCount(0)
+        }
+
+        // Слушаем событие обновления избранного
+        const handleFavoritesUpdate = () => {
+            if (isLoggedIn) fetchFavoritesCount()
+        }
+
+        // Слушаем событие обновления корзины
+        const handleCartUpdate = () => {
+            if (isLoggedIn) fetchCartCount()
+        }
+
+        window.addEventListener('favoritesUpdated', handleFavoritesUpdate)
+        window.addEventListener('cartUpdated', handleCartUpdate)
+
+        return () => {
+            window.removeEventListener('favoritesUpdated', handleFavoritesUpdate)
+            window.removeEventListener('cartUpdated', handleCartUpdate)
+        }
+    }, [isLoggedIn])
 
     const handleAuthClick = () => {
         if (isLoggedIn) {
@@ -21,17 +94,25 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
         }
     }
 
+    const handleFavoritesClick = () => {
+        navigate('/favorites')
+    }
+
+    const handleCartClick = () => {
+        navigate('/cart')
+    }
+
     return (
         <div className="header-icons">
             {/* Избранное */}
-            <button className="icon-btn" aria-label="Избранное">
+            <button className="icon-btn" aria-label="Избранное" onClick={handleFavoritesClick}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 21.35L10.55 20.03C5.4 15.36 2 12.27 2 8.5 2 5.41 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.08C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.41 22 8.5c0 3.77-3.4 6.86-8.55 11.54L12 21.35Z"
                           fill="none"
                           stroke="currentColor"
                           strokeWidth="1.5"/>
                 </svg>
-                <span className="icon-badge">0</span>
+                {favoritesCount > 0 && <span className="icon-badge">{favoritesCount}</span>}
             </button>
 
             {/* Заказы - только для авторизованных */}
@@ -47,7 +128,7 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
             )}
 
             {/* Корзина */}
-            <button className="icon-btn" aria-label="Корзина">
+            <button className="icon-btn" aria-label="Корзина" onClick={handleCartClick}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M6 6H20L18 17H8L6 6Z" stroke="currentColor" strokeWidth="1.5" fill="none"/>
                     <path d="M6 6L5 3H2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
@@ -55,7 +136,7 @@ function HeaderIcons({ isLoggedIn, userName, userPhone, onLogout }) {
                     <circle cx="17" cy="20" r="1.5" fill="currentColor"/>
                     <path d="M10 9L12 12L16 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
                 </svg>
-                <span className="icon-badge">2</span>
+                {cartCount > 0 && <span className="icon-badge">{cartCount}</span>}
             </button>
 
             {/* Авторизация / Профиль */}
