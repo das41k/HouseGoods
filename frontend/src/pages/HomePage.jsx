@@ -179,7 +179,7 @@ function HomePage() {
             ) : (
                 <>
                     {/* Секция Каталог */}
-                    <div id="catalog-section" ref={catalogRef} className="section">
+                    <div id="catalog-section" ref={catalogRef} className="home-section">
                         {categories.length > 0 && (
                             <div className="categories-grid">
                                 {categories.map((category, idx) => (
@@ -195,10 +195,10 @@ function HomePage() {
 
                     {/* Секция Скидки - только на главной */}
                     {isHomePage && saleProducts.length > 0 && (
-                        <div id="sales-section" ref={salesRef} className="section">
-                            <div className="section-header">
-                                <h2 className="section-title">🔥 Товары со скидкой</h2>
-                                <p className="section-subtitle">Успей купить по выгодной цене</p>
+                        <div id="sales-section" ref={salesRef} className="home-section">
+                            <div className="home-section-header">
+                                <h2 className="home-section-title">🔥 Товары со скидкой</h2>
+                                <p className="home-section-subtitle">Успей купить по выгодной цене</p>
                             </div>
                             <ProductSlider products={saleProducts} onProductClick={handleProductClick} />
                         </div>
@@ -206,10 +206,10 @@ function HomePage() {
 
                     {/* Секция Бренды - только на главной */}
                     {isHomePage && brands.length > 0 && (
-                        <div id="brands-section" ref={brandsRef} className="section">
-                            <div className="section-header">
-                                <h2 className="section-title">Популярные бренды</h2>
-                                <p className="section-subtitle">Ведущие мировые производители</p>
+                        <div id="brands-section" ref={brandsRef} className="home-section">
+                            <div className="home-section-header">
+                                <h2 className="home-section-title">Популярные бренды</h2>
+                                <p className="home-section-subtitle">Ведущие мировые производители</p>
                             </div>
                             <BrandSlider brands={brands} onBrandClick={handleBrandClick} />
                         </div>
@@ -217,10 +217,10 @@ function HomePage() {
 
                     {/* Секция Страны - только на главной */}
                     {isHomePage && countries.length > 0 && (
-                        <div id="countries-section" ref={countriesRef} className="section">
-                            <div className="section-header">
-                                <h2 className="section-title">Страны производители</h2>
-                                <p className="section-subtitle">Товары со всего мира</p>
+                        <div id="countries-section" ref={countriesRef} className="home-section">
+                            <div className="home-section-header">
+                                <h2 className="home-section-title">Страны производители</h2>
+                                <p className="home-section-subtitle">Товары со всего мира</p>
                             </div>
                             <CountryGrid countries={countries} onCountryClick={handleCountryClick} />
                         </div>

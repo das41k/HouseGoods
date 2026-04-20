@@ -247,8 +247,9 @@
     border-top: 1px solid #e5e7eb;
 }
 
-/* Карточки */
-.delivery-card, .summary-card {
+/* Измененные классы для карточек (было .delivery-card, .summary-card) */
+.order-delivery-card,
+.order-summary-card {
     background: #f9fafb;
     border-radius: 16px;
     padding: 20px;
@@ -256,11 +257,13 @@
     transition: all 0.2s;
 }
 
-.delivery-card:hover, .summary-card:hover {
+.order-delivery-card:hover,
+.order-summary-card:hover {
     background: #f3f4f6;
 }
 
-.card-header {
+/* Измененный класс для заголовка карточек (было .card-header) */
+.order-card-header {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -269,11 +272,12 @@
     border-bottom: 2px solid #e5e7eb;
 }
 
-.card-icon {
+/* Измененный класс для иконки (было .card-icon) */
+.order-card-icon {
     font-size: 24px;
 }
 
-.card-header h3 {
+.order-card-header h3 {
     font-size: 16px;
     font-weight: 600;
     color: #1f2937;
@@ -560,7 +564,8 @@
         min-width: auto;
     }
 
-    .delivery-card, .summary-card {
+    .order-delivery-card,
+    .order-summary-card {
         padding: 16px;
     }
 }

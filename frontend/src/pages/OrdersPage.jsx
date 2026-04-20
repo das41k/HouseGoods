@@ -187,9 +187,9 @@ function OrdersPage() {
                                     <div className="content-inner">
                                         {/* Информация о доставке */}
                                         {order.deliveryInfo && (
-                                            <div className="delivery-card">
-                                                <div className="card-header">
-                                                    <div className="card-icon">📍</div>
+                                            <div className="order-delivery-card">
+                                                <div className="order-card-header">
+                                                    <div className="order-card-icon">📍</div>
                                                     <h3>Информация о доставке</h3>
                                                 </div>
                                                 <div className="delivery-address">
@@ -238,9 +238,9 @@ function OrdersPage() {
                                         )}
 
                                         {/* Итого */}
-                                        <div className="summary-card">
-                                            <div className="card-header">
-                                                <div className="card-icon">💰</div>
+                                        <div className="order-summary-card">
+                                            <div className="order-card-header">
+                                                <div className="order-card-icon">💰</div>
                                                 <h3>Итоговая стоимость</h3>
                                             </div>
                                             <div className="summary-items">

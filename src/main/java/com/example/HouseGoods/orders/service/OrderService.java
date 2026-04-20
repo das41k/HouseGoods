@@ -175,7 +175,7 @@ public class OrderService {
 
     private Double getTotalPrice(List<OrderItem> orderItems) {
         return orderItems.stream()
-                .mapToDouble(order -> order.getPriceAtTime() * order.getQuantity())
+                .mapToDouble(OrderItem::getPriceAtTime)
                 .sum();
     }
 }

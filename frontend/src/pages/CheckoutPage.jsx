@@ -79,7 +79,7 @@ function CheckoutPage() {
             if (response.ok) {
                 const data = await response.json()
                 setCartItems(data.items || [])
-                const total = (data.items || []).reduce((sum, item) => sum + (item.price * item.quantity), 0)
+                const total = (data.items || []).reduce((sum, item) => sum + item.price, 0)
                 setTotalPrice(total)
             }
         } catch (error) {
@@ -340,7 +340,7 @@ function CheckoutPage() {
                                             <span className="order-item-name">{item.name}</span>
                                             <span className="order-item-quantity">× {item.quantity}</span>
                                         </div>
-                                        <span className="order-item-price">{(item.price * item.quantity).toLocaleString()} ₽</span>
+                                        <span className="order-item-price">{item.price.toLocaleString()} ₽</span>
                                     </div>
                                 ))}
                             </div>
