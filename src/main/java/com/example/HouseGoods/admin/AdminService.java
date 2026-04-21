@@ -1,12 +1,20 @@
 package com.example.HouseGoods.admin;
 
+import com.example.HouseGoods.admin.dto.UpdateCreateBrandRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateCategoryRequest;
+import com.example.HouseGoods.admin.exception.BrandIsAlreadyException;
 import com.example.HouseGoods.admin.exception.CategoryIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductsExistsException;
+import com.example.HouseGoods.products.Product;
+import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
+import com.example.HouseGoods.products.entity.Country;
+import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
+import com.example.HouseGoods.products.exception.CountryNotFoundException;
 import com.example.HouseGoods.products.repository.BrandRepository;
 import com.example.HouseGoods.products.repository.CategoryRepository;
+import com.example.HouseGoods.products.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,6 +28,7 @@ import java.util.Optional;
 public class AdminService {
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
+    private final CountryRepository countryRepository;
 
     public void createCategory(UpdateCreateCategoryRequest request) {
         Optional<Category> existCategory = categoryRepository.findByTitle(request.getTitle());
@@ -72,5 +81,49 @@ public class AdminService {
                     .orElseThrow(() -> new CategoryNotFoundException("Родительская категория не была найдена!"));
         }
         category.setCategoryParent(parent);
+    }
+
+    public void createBrand(UpdateCreateBrandRequest request) {
+        log.info("AdminService: createBrand");
+        Optional<Brand> existBrand = brandRepository.findByName(request.getName());
+        if (existBrand.isPresent()) {
+            throw new BrandIsAlreadyException("Бренд с таким названием уже есть в системе");
+        }
+        Country country = countryRepository.findByCode(request.getCountryCode())
+                .orElseThrow(() -> new CountryNotFoundException("Указанная страна не была найдена!"));
+        Brand brand = new Brand();
+        initializeBrand(request, brand, country);
+        brandRepository.save(brand);
+    }
+
+    public void updateBrand(UpdateCreateBrandRequest request) {
+        log.info("AdminService: updateBrand");
+        Brand brand = brandRepository.findByName(request.getName())
+                .orElseThrow(() -> new BrandNotFoundException("Бренд не был найден!"));
+        Country country = countryRepository.findByCode(request.getCountryCode())
+                .orElseThrow(() -> new CountryNotFoundException("Указанная страна не была найдена!"));
+        initializeBrand(request, brand, country);
+        brandRepository.save(brand);
+    }
+
+    public void deleteBrand(String brandName) {
+        log.info("AdminService: deleteBrand");
+        Brand brand = brandRepository.findByName(brandName)
+                .orElseThrow(() -> new BrandNotFoundException("Бренд не был найден!"));
+        List<Product> products = brand.getProducts();
+        if (products != null && !products.isEmpty()) {
+            throw new ProductsExistsException(
+                    String.format("Невозможно удалить бренд '%s', так как в ней содержится %d товаров. " +
+                                    "Сначала переместите или удалите товары.",
+                            brand.getName(),brand.getProducts().size())
+            );
+        }
+        brandRepository.delete(brand);
+    }
+
+    private void initializeBrand(UpdateCreateBrandRequest request, Brand brand, Country country) {
+        brand.setName(request.getName());
+        brand.setImageURl(request.getImageURl());
+        brand.setCountry(country);
     }
 }

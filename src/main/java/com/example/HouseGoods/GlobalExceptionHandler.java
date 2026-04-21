@@ -1,5 +1,6 @@
 package com.example.HouseGoods;
 
+import com.example.HouseGoods.admin.exception.BrandIsAlreadyException;
 import com.example.HouseGoods.admin.exception.CategoryIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductsExistsException;
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
@@ -184,6 +185,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductsExistsException.class)
     public ResponseEntity<Map<String, Object>> handleProductsExistsException(ProductsExistsException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.BAD_REQUEST);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BrandIsAlreadyException.class)
+    public ResponseEntity<Map<String, Object>> handleBrandIsAlreadyException(BrandIsAlreadyException ex) {
         log.error(ex.getMessage());
         Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
