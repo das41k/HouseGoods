@@ -30,4 +30,11 @@ public class AdminController {
         adminService.updateCategory(id, request);
         return ResponseEntity.ok("Категория была успешно обновлена!");
     }
+
+    @DeleteMapping("/categories/{id}")
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+        log.debug("DELETE /api/admin/categories/" + id);
+        adminService.deleteCategory(id);
+        return ResponseEntity.ok("Категория была успешно удалена");
+    }
 }
