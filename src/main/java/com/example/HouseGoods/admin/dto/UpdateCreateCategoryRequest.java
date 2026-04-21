@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateCategoryRequest {
+public class UpdateCreateCategoryRequest {
     private String title;
     private String description;
     private String imageURl;

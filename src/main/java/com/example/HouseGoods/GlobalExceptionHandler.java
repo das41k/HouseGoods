@@ -1,5 +1,6 @@
 package com.example.HouseGoods;
 
+import com.example.HouseGoods.admin.exception.CategoryIsAlreadyException;
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
 import com.example.HouseGoods.baskets.exception.BasketNotFoundException;
 import com.example.HouseGoods.baskets.exception.ProductIsFoundException;
@@ -168,5 +169,15 @@ public class GlobalExceptionHandler {
         response.put("status", HttpStatus.NOT_FOUND);
         response.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CategoryIsAlreadyException.class)
+    public ResponseEntity<Map<String, Object>> handleCategoryIsAlreadyException(CategoryIsAlreadyException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.BAD_REQUEST);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
