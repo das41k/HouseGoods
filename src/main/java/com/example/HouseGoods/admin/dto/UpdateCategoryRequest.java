@@ -1,0 +1,15 @@
+package com.example.HouseGoods.admin.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class UpdateCategoryRequest {
+    private String title;
+    private String description;
+    private String imageURl;
+    private Long parentId;
+}
