@@ -275,7 +275,7 @@ function OrderDetailsPage() {
                                     </div>
                                     <div className="product-total">
                                         <span className="total-label">Сумма</span>
-                                        <span className="total-value">{formatPrice(product.price * product.quantity)}</span>
+                                        <span className="total-value">{formatPrice(product.price)}</span>
                                     </div>
                                 </div>
                             ))}

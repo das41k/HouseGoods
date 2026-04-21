@@ -1,0 +1,373 @@
+.favorites-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #eef2f7 100%);
+    padding: 32px 0 64px;
+}
+
+.favorites-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Хлебные крошки */
+.favorites-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 32px;
+    font-size: 14px;
+}
+
+.breadcrumb-link {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 6px 12px;
+    border-radius: 8px;
+}
+
+.breadcrumb-link:hover {
+    color: #00a046;
+    background: rgba(0, 160, 70, 0.1);
+}
+
+.breadcrumb-separator {
+    color: #d1d5db;
+}
+
+.breadcrumb-active {
+    color: #1f2937;
+    font-weight: 600;
+}
+
+/* Заголовок */
+.favorites-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.favorites-title {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1f2937 0%, #00a046 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.favorites-count {
+    font-size: 14px;
+    color: #6b7280;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Сетка избранного */
+.favorites-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Карточка избранного */
+.favorite-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    position: relative;
+}
+
+.favorite-card:hover {
+    box-shadow: 0 8px 25px rgba(0, 160, 70, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Изображение */
+.favorite-image {
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    background: #f9fafb;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.favorite-image:hover {
+    transform: scale(1.02);
+}
+
+.favorite-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12px;
+}
+
+.image-placeholder {
+    font-size: 48px;
+}
+
+/* Информация */
+.favorite-info {
+    flex: 1;
+}
+
+.favorite-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.favorite-name:hover {
+    color: #00a046;
+}
+
+.favorite-meta {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.favorite-category {
+    font-size: 12px;
+    color: #00a046;
+    background: #e6f4ea;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+.favorite-brand {
+    font-size: 12px;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 4px 12px;
+    border-radius: 20px;
+}
+
+/* Цена */
+.favorite-price {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.sale-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #00a046;
+}
+
+.old-price {
+    font-size: 16px;
+    color: #9ca3af;
+    text-decoration: line-through;
+}
+
+.regular-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.favorite-date {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+/* Кнопка удаления */
+.remove-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fee2e2;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: #dc2626;
+    flex-shrink: 0;
+}
+
+.remove-btn:hover {
+    background: #dc2626;
+    color: white;
+    transform: scale(1.05);
+}
+
+/* Пустое состояние */
+.favorites-empty {
+    text-align: center;
+    padding: 80px 40px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.empty-icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.favorites-empty h2 {
+    font-size: 24px;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.favorites-empty p {
+    color: #6b7280;
+    margin-bottom: 32px;
+}
+
+.empty-back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 32px;
+    background: linear-gradient(135deg, #00a046 0%, #00853b 100%);
+    color: white;
+    border: none;
+    border-radius: 40px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.empty-back-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 160, 70, 0.3);
+    gap: 15px;
+}
+
+/* Состояния загрузки/ошибки */
+.loading-state, .error-state {
+    text-align: center;
+    padding: 80px 40px;
+    background: white;
+    border-radius: 30px;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #00a046;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.error-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+}
+
+.retry-btn, .back-btn {
+    margin-top: 20px;
+    padding: 10px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+}
+
+.retry-btn {
+    background: #00a046;
+    color: white;
+    margin-right: 12px;
+}
+
+.back-btn {
+    background: #e5e7eb;
+    color: #4b5563;
+}
+
+/* Адаптив */
+@media (max-width: 700px) {
+    .favorites-container {
+        padding: 0 16px;
+    }
+
+    .favorite-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 16px;
+    }
+
+    .favorite-image {
+        width: 150px;
+        height: 150px;
+    }
+
+    .favorite-meta {
+        justify-content: center;
+    }
+
+    .favorite-price {
+        justify-content: center;
+    }
+
+    .remove-btn {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+    }
+
+    .favorites-title {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .favorite-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .sale-price, .regular-price {
+        font-size: 20px;
+    }
+
+    .favorites-empty h2 {
+        font-size: 20px;
+    }
+}

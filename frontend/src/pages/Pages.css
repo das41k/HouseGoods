@@ -4,18 +4,18 @@
     padding: 0 24px;
 }
 
-.section {
+.home-section {
     scroll-margin-top: 80px;
     margin-bottom: 60px;
 }
 
-/* Единый стиль для заголовков секций */
-.section-header {
+/* Единый стиль для заголовков секций на главной */
+.home-section-header {
     text-align: center;
     margin-bottom: 32px;
 }
 
-.section-title {
+.home-section-title {
     font-size: 28px;
     font-weight: 600;
     color: var(--gray-800);
@@ -24,7 +24,7 @@
     display: inline-block;
 }
 
-.section-title::after {
+.home-section-title::after {
     content: '';
     position: absolute;
     bottom: -12px;
@@ -36,7 +36,7 @@
     border-radius: 2px;
 }
 
-.section-subtitle {
+.home-section-subtitle {
     font-size: 15px;
     color: var(--gray-500);
     margin-top: 20px;
@@ -127,20 +127,20 @@
         padding: 0 16px;
     }
 
-    .section {
+    .home-section {
         scroll-margin-top: 70px;
         margin-bottom: 40px;
     }
 
-    .section-header {
+    .home-section-header {
         margin-bottom: 24px;
     }
 
-    .section-title {
+    .home-section-title {
         font-size: 22px;
     }
 
-    .section-subtitle {
+    .home-section-subtitle {
         font-size: 13px;
         margin-top: 16px;
     }
@@ -161,7 +161,7 @@
         max-width: 280px;
     }
 
-    .section-title {
+    .home-section-title {
         font-size: 20px;
     }
 }
