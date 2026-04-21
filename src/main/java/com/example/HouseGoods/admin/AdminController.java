@@ -74,4 +74,11 @@ public class AdminController {
         adminService.updateProduct(sku, request);
         return ResponseEntity.ok("Товар был успешно обновлен");
     }
+
+    @DeleteMapping("/products/{sku}")
+    public ResponseEntity<?> deleteProduct(@PathVariable String sku) {
+        log.debug("DELETE /api/admin/product/" + sku);
+        adminService.deleteProduct(sku);
+        return ResponseEntity.ok("Товар был успешно удален");
+    }
 }

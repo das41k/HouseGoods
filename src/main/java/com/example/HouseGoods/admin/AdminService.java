@@ -314,4 +314,11 @@ public class AdminService {
 
         return code;
     }
+
+    public void deleteProduct(String sku) {
+        log.info("AdminService.deleteProduct: sku: {}", sku);
+        Product product = productRepository.findBySku(sku)
+                .orElseThrow(() -> new ProductNotFoundException("Товар не был найден!"));
+        productRepository.delete(product);
+    }
 }
