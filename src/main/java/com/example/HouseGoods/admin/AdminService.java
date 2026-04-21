@@ -14,6 +14,7 @@ import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
 import com.example.HouseGoods.products.entity.Country;
 import com.example.HouseGoods.products.entity.ProductAttributeValue;
+import com.example.HouseGoods.admin .exception.AttributeAlreadyExistsException;
 import com.example.HouseGoods.products.exception.AttributeNotFoundException;
 import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
@@ -66,7 +67,8 @@ public class AdminService {
     public void deleteCategory(Long categoryId) {
         log.info("AdminService: deleteCategory");
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new  CategoryNotFoundException("Категория не была найдена!"));
+                .orElseThrow(() -> new CategoryNotFoundException("Категория не была найдена!"));
+
         if (category.getProducts() != null && !category.getProducts().isEmpty()) {
             throw new ProductsExistsException(
                     String.format("Невозможно удалить категорию '%s', так как в ней содержится %d товаров. " +
@@ -128,9 +130,9 @@ public class AdminService {
         List<Product> products = brand.getProducts();
         if (products != null && !products.isEmpty()) {
             throw new ProductsExistsException(
-                    String.format("Невозможно удалить бренд '%s', так как в ней содержится %d товаров. " +
+                    String.format("Невозможно удалить бренд '%s', так как в нём содержится %d товаров. " +
                                     "Сначала переместите или удалите товары.",
-                            brand.getName(),brand.getProducts().size())
+                            brand.getName(), brand.getProducts().size())
             );
         }
         brandRepository.delete(brand);
@@ -146,17 +148,14 @@ public class AdminService {
     public void createProduct(UpdateCreateProductRequest request) {
         Optional<Product> existProduct = productRepository.findBySku(request.getSku());
         if (existProduct.isPresent()) {
-            throw new ProductIsAlreadyException("РўРѕРІР°СЂ СЃ С‚Р°РєРёРј SKU СѓР¶Рµ РµСЃС‚СЊ РІ СЃРёСЃС‚РµРјРµ!");
+            throw new ProductIsAlreadyException("Товар с таким SKU уже существует в системе!");
         }
 
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new CategoryNotFoundException("РљР°С‚РµРіРѕСЂРёСЏ РЅРµ Р±С‹Р»Р° РЅР°Р№РґРµРЅР°!"));
+                .orElseThrow(() -> new CategoryNotFoundException("Категория не была найдена!"));
 
-        Brand brand = null;
-        if (request.getBrandId() != null) {
-            brand = brandRepository.findById(request.getBrandId())
-                    .orElseThrow(() -> new BrandNotFoundException("Р‘СЂРµРЅРґ РЅРµ Р±С‹Р» РЅР°Р№РґРµРЅ!"));
-        }
+        Brand brand = brandRepository.findById(request.getBrandId())
+                .orElseThrow(() -> new BrandNotFoundException("Бренд не был найден!"));
 
         Product product = new Product();
         initializeProduct(request, product, category, brand);
@@ -198,11 +197,18 @@ public class AdminService {
 
         List<ProductAttributeValue> productAttributeValues = new ArrayList<>();
         for (UpdateCreateProductAttributeRequest request : requests) {
-            Attribute attribute = resolveAttribute(request);
+            // Проверяем, существует ли уже такой атрибут в системе
+            validateAttributeDoesNotExist(request);
+
+            // Создаём новый атрибут
+            Attribute attribute = createNewAttribute(request);
+
+            // Сохраняем атрибут в БД
+            Attribute savedAttribute = attributeRepository.save(attribute);
 
             ProductAttributeValue productAttributeValue = new ProductAttributeValue();
             productAttributeValue.setProduct(product);
-            productAttributeValue.setAttribute(attribute);
+            productAttributeValue.setAttribute(savedAttribute);
             productAttributeValue.setValue(request.getValue());
             productAttributeValue.setUnit(request.getUnit());
             productAttributeValues.add(productAttributeValue);
@@ -211,51 +217,64 @@ public class AdminService {
         return productAttributeValues;
     }
 
-    private Attribute resolveAttribute(UpdateCreateProductAttributeRequest request) {
-        if (request.getAttributeId() != null) {
-            return attributeRepository.findById(request.getAttributeId())
-                    .orElseThrow(() -> new AttributeNotFoundException("РђС‚СЂРёР±СѓС‚ РЅРµ Р±С‹Р» РЅР°Р№РґРµРЅ!"));
-        }
+    private void validateAttributeDoesNotExist(UpdateCreateProductAttributeRequest request) {
+        String code = request.getAttributeCode();
+        String name = request.getAttributeName();
 
-        if (request.getAttributeCode() != null && !request.getAttributeCode().isBlank()) {
-            Optional<Attribute> existAttributeByCode = attributeRepository.findByCode(request.getAttributeCode());
-            if (existAttributeByCode.isPresent()) {
-                return existAttributeByCode.get();
+        // Проверка по code
+        if (code != null && !code.isBlank()) {
+            Optional<Attribute> existingByCode = attributeRepository.findByCode(code.trim());
+            if (existingByCode.isPresent()) {
+                throw new AttributeAlreadyExistsException(
+                        String.format("Атрибут с кодом '%s' уже существует в системе!", code)
+                );
             }
         }
 
-        if (request.getAttributeName() != null && !request.getAttributeName().isBlank()) {
-            Optional<Attribute> existAttributeByName = attributeRepository.findByName(request.getAttributeName());
-            if (existAttributeByName.isPresent()) {
-                return existAttributeByName.get();
+        // Проверка по name
+        if (name != null && !name.isBlank()) {
+            Optional<Attribute> existingByName = attributeRepository.findByName(name.trim());
+            if (existingByName.isPresent()) {
+                throw new AttributeAlreadyExistsException(
+                        String.format("Атрибут с названием '%s' уже существует в системе!", name)
+                );
             }
         }
+    }
 
-        if ((request.getAttributeName() == null || request.getAttributeName().isBlank())
-                && (request.getAttributeCode() == null || request.getAttributeCode().isBlank())) {
-            throw new AttributeNotFoundException("Р”Р»СЏ СЃРѕР·РґР°РЅРёСЏ РЅРѕРІРѕРіРѕ Р°С‚СЂРёР±СѓС‚Р° РЅСѓР¶РЅРѕ СѓРєР°Р·Р°С‚СЊ РЅР°Р·РІР°РЅРёРµ РёР»Рё РєРѕРґ!");
+    private Attribute createNewAttribute(UpdateCreateProductAttributeRequest request) {
+        String name = request.getAttributeName();
+        if (name == null || name.isBlank()) {
+            throw new AttributeNotFoundException("Не указано название атрибута!");
         }
 
         Attribute attribute = new Attribute();
-        attribute.setName(request.getAttributeName());
-        attribute.setCode(buildAttributeCode(request));
+        attribute.setName(name.trim());
+        attribute.setCode(generateAttributeCode(request));
         attribute.setIsFilterable(Boolean.TRUE.equals(request.getIsFilterable()));
-        return attributeRepository.save(attribute);
+
+        return attribute;
     }
 
-    private String buildAttributeCode(UpdateCreateProductAttributeRequest request) {
+    private String generateAttributeCode(UpdateCreateProductAttributeRequest request) {
+        // Если передан code - используем его
         if (request.getAttributeCode() != null && !request.getAttributeCode().isBlank()) {
             return request.getAttributeCode().trim().toLowerCase(Locale.ROOT);
         }
 
-        String attributeName = request.getAttributeName();
-        String code = attributeName.trim()
+        // Генерируем из названия
+        String name = request.getAttributeName();
+        if (name == null || name.isBlank()) {
+            throw new AttributeNotFoundException("Не указано название атрибута для генерации кода");
+        }
+
+        String code = name.trim()
                 .toLowerCase(Locale.ROOT)
                 .replaceAll("[^\\p{L}\\p{Nd}]+", "_")
                 .replaceAll("^_+|_+$", "");
 
         if (code.isBlank()) {
-            throw new AttributeNotFoundException("РќРµ СѓРґР°Р»РѕСЃСЊ СЃС„РѕСЂРјРёСЂРѕРІР°С‚СЊ РєРѕРґ Р°С‚СЂРёР±СѓС‚Р°!");
+            throw new AttributeNotFoundException("Не удалось сгенерировать код из названия: " + name);
         }
 
         return code;

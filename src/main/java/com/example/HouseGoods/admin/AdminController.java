@@ -64,6 +64,6 @@ public class AdminController {
     public ResponseEntity<?> createProduct(@RequestBody UpdateCreateProductRequest request){
         log.debug("POST /api/admin/products");
         adminService.createProduct(request);
-        return ResponseEntity.ok("РўРѕРІР°СЂ Р±С‹Р» СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅ");
+        return ResponseEntity.ok("Товар был успешно создан");
     }
 }

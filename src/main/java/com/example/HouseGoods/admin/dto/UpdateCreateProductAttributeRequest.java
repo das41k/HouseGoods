@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateCreateProductAttributeRequest {
-    private Long attributeId;
     private String attributeName;
     private String attributeCode;
     private Boolean isFilterable;
