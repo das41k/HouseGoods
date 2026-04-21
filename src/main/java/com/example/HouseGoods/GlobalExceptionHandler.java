@@ -2,6 +2,7 @@ package com.example.HouseGoods;
 
 import com.example.HouseGoods.admin.exception.BrandIsAlreadyException;
 import com.example.HouseGoods.admin.exception.CategoryIsAlreadyException;
+import com.example.HouseGoods.admin.exception.ProductIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductsExistsException;
 import com.example.HouseGoods.auth.exception.ClientIsAlreadyException;
 import com.example.HouseGoods.baskets.exception.BasketNotFoundException;
@@ -12,6 +13,7 @@ import com.example.HouseGoods.favorites.exception.FavoriteNotFoundException;
 import com.example.HouseGoods.orders.exception.OrderIsNotAlreadyClient;
 import com.example.HouseGoods.orders.exception.OrderNotFoundException;
 import com.example.HouseGoods.orders.exception.PaymentMethodNotFound;
+import com.example.HouseGoods.products.exception.AttributeNotFoundException;
 import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
 import com.example.HouseGoods.products.exception.CountryNotFoundException;
@@ -55,6 +57,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BrandNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFoundBrand(BrandNotFoundException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.NOT_FOUND);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AttributeNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundAttribute(AttributeNotFoundException ex) {
         log.error(ex.getMessage());
         Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
@@ -195,6 +207,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BrandIsAlreadyException.class)
     public ResponseEntity<Map<String, Object>> handleBrandIsAlreadyException(BrandIsAlreadyException ex) {
+        log.error(ex.getMessage());
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        response.put("status", HttpStatus.BAD_REQUEST);
+        response.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(ProductIsAlreadyException.class)
+    public ResponseEntity<Map<String, Object>> handleProductIsAlreadyException(ProductIsAlreadyException ex) {
         log.error(ex.getMessage());
         Map<String, Object> response = new HashMap<>();
         response.put("message", ex.getMessage());
