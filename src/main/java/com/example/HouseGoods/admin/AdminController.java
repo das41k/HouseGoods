@@ -2,6 +2,7 @@ package com.example.HouseGoods.admin;
 
 import com.example.HouseGoods.admin.dto.UpdateCreateBrandRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateCategoryRequest;
+import com.example.HouseGoods.admin.dto.UpdateCreateProductRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -58,5 +59,26 @@ public class AdminController {
         log.debug("DELETE /api/admin/brands/" + id);
         adminService.deleteBrand(id);
         return ResponseEntity.ok("Бренд был успешно удален");
+    }
+    @PostMapping("/products")
+    public ResponseEntity<?> createProduct(@RequestBody UpdateCreateProductRequest request){
+        log.debug("POST /api/admin/products");
+        adminService.createProduct(request);
+        return ResponseEntity.ok("Товар был успешно создан");
+    }
+
+    @PutMapping("/products/{sku}")
+    public ResponseEntity<?> updateProduct(@PathVariable String sku,
+               @RequestBody UpdateCreateProductRequest request ) {
+        log.debug("PUT /api/admin/product/" + sku);
+        adminService.updateProduct(sku, request);
+        return ResponseEntity.ok("Товар был успешно обновлен");
+    }
+
+    @DeleteMapping("/products/{sku}")
+    public ResponseEntity<?> deleteProduct(@PathVariable String sku) {
+        log.debug("DELETE /api/admin/product/" + sku);
+        adminService.deleteProduct(sku);
+        return ResponseEntity.ok("Товар был успешно удален");
     }
 }
