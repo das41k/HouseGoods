@@ -66,4 +66,12 @@ public class AdminController {
         adminService.createProduct(request);
         return ResponseEntity.ok("Товар был успешно создан");
     }
+
+    @PutMapping("/products/{sku}")
+    public ResponseEntity<?> updateProduct(@PathVariable String sku,
+               @RequestBody UpdateCreateProductRequest request ) {
+        log.debug("PUT /api/admin/product/" + sku);
+        adminService.updateProduct(sku, request);
+        return ResponseEntity.ok("Товар был успешно обновлен");
+    }
 }
