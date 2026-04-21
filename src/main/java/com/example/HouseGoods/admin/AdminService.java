@@ -96,9 +96,9 @@ public class AdminService {
         brandRepository.save(brand);
     }
 
-    public void updateBrand(UpdateCreateBrandRequest request) {
+    public void updateBrand(Long brandId, UpdateCreateBrandRequest request) {
         log.info("AdminService: updateBrand");
-        Brand brand = brandRepository.findByName(request.getName())
+        Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException("Бренд не был найден!"));
         Country country = countryRepository.findByCode(request.getCountryCode())
                 .orElseThrow(() -> new CountryNotFoundException("Указанная страна не была найдена!"));
@@ -106,9 +106,9 @@ public class AdminService {
         brandRepository.save(brand);
     }
 
-    public void deleteBrand(String brandName) {
+    public void deleteBrand(Long brandId) {
         log.info("AdminService: deleteBrand");
-        Brand brand = brandRepository.findByName(brandName)
+        Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException("Бренд не был найден!"));
         List<Product> products = brand.getProducts();
         if (products != null && !products.isEmpty()) {
