@@ -1,5 +1,6 @@
 package com.example.HouseGoods.products.entity;
 
+import com.example.HouseGoods.products.Product;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -30,4 +31,7 @@ public class Category {
 
     @Column(name = "image_url", length = 500)
     private String imageURl;
+
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 }

@@ -96,7 +96,7 @@ public class ProductService {
 
     public List<ProductResponse> getProductsByCountry(String countryName) {
         log.info("Работа ProductService: getProductsByCountry(String countryName)");
-        Country country = countryRepository.findByName(countryName)
+        Country country = countryRepository.findByCode(countryName)
                         .orElseThrow(() -> new CountryNotFoundException("Страна с данным названием не была найдена!"));
         List<Product> products = productRepository.findByBrand_Country(country);
         log.info("Завершение ProductService: getProductsByCountry(String countryName)");
