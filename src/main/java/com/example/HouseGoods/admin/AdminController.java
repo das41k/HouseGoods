@@ -1,12 +1,16 @@
 package com.example.HouseGoods.admin;
 
+import com.example.HouseGoods.admin.dto.AdminDataResponse;
 import com.example.HouseGoods.admin.dto.UpdateCreateBrandRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateCategoryRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateProductRequest;
+import com.example.HouseGoods.products.dto.CountryResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -80,5 +84,17 @@ public class AdminController {
         log.debug("DELETE /api/admin/product/" + sku);
         adminService.deleteProduct(sku);
         return ResponseEntity.ok("Товар был успешно удален");
+    }
+
+    @GetMapping
+    public ResponseEntity<AdminDataResponse> getAdminData() {
+        log.debug("GET /api/admin");
+        return ResponseEntity.ok(adminService.getAdminData());
+    }
+
+    @GetMapping("/countries")
+    public ResponseEntity<List<CountryResponse>> getCountries() {
+        log.debug("GET /api/admin/countries");
+        return ResponseEntity.ok(adminService.getCountries());
     }
 }

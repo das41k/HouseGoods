@@ -1,14 +1,12 @@
 package com.example.HouseGoods.admin;
 
-import com.example.HouseGoods.admin.dto.UpdateCreateBrandRequest;
-import com.example.HouseGoods.admin.dto.UpdateCreateCategoryRequest;
-import com.example.HouseGoods.admin.dto.UpdateCreateProductAttributeRequest;
-import com.example.HouseGoods.admin.dto.UpdateCreateProductRequest;
+import com.example.HouseGoods.admin.dto.*;
 import com.example.HouseGoods.admin.exception.BrandIsAlreadyException;
 import com.example.HouseGoods.admin.exception.CategoryIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductsExistsException;
 import com.example.HouseGoods.products.Product;
+import com.example.HouseGoods.products.dto.CountryResponse;
 import com.example.HouseGoods.products.entity.Attribute;
 import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
@@ -19,6 +17,8 @@ import com.example.HouseGoods.products.exception.BrandNotFoundException;
 import com.example.HouseGoods.products.exception.CategoryNotFoundException;
 import com.example.HouseGoods.products.exception.CountryNotFoundException;
 import com.example.HouseGoods.products.exception.ProductNotFoundException;
+import com.example.HouseGoods.products.mapper.CategoryMapper;
+import com.example.HouseGoods.products.mapper.CountryMapper;
 import com.example.HouseGoods.products.repository.AttributeRepository;
 import com.example.HouseGoods.products.repository.BrandRepository;
 import com.example.HouseGoods.products.repository.CategoryRepository;
@@ -45,6 +45,8 @@ public class AdminService {
     private final ProductRepository productRepository;
     private final AttributeRepository attributeRepository;
     private final ProductAttributeValueRepository productAttributeValueRepository;
+    private final CategoryMapper categoryMapper;
+    private final CountryMapper countryMapper;
 
     public void createCategory(UpdateCreateCategoryRequest request) {
         Optional<Category> existCategory = categoryRepository.findByTitle(request.getTitle());
@@ -320,5 +322,35 @@ public class AdminService {
         Product product = productRepository.findBySku(sku)
                 .orElseThrow(() -> new ProductNotFoundException("Товар не был найден!"));
         productRepository.delete(product);
+    }
+
+    public AdminDataResponse getAdminData() {
+        List<Category>  categories = categoryRepository.findAll();
+        AdminDataResponse adminDataResponse = new AdminDataResponse();
+        adminDataResponse.setCategories(categories.stream()
+                .map(categoryMapper::mappingToCategoryResponse)
+                .toList()
+        );
+        List<Brand> brands = brandRepository.findAll();
+        adminDataResponse.setBrands(brands.stream()
+                .map(this::tobrandResponse)
+                .toList()
+        );
+        return adminDataResponse;
+    }
+
+    private BrandResponse tobrandResponse(Brand brand) {
+        BrandResponse brandResponse = new BrandResponse();
+        brandResponse.setName(brand.getName());
+        brandResponse.setId(brand.getBrandId());
+        brandResponse.setImageURl(brand.getImageURl());
+        brandResponse.setCountryResponse(countryMapper.mappingToCountryResponse(brand.getCountry()));
+        return brandResponse;
+    }
+
+    public List<CountryResponse> getCountries() {
+        return countryRepository.findAll().stream()
+                .map(countryMapper::mappingToCountryResponse)
+                .toList();
     }
 }
