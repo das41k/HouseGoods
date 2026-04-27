@@ -7,6 +7,7 @@ import com.example.HouseGoods.admin.exception.ProductIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductsExistsException;
 import com.example.HouseGoods.products.Product;
 import com.example.HouseGoods.products.dto.CountryResponse;
+import com.example.HouseGoods.products.dto.ProductResponse;
 import com.example.HouseGoods.products.entity.Attribute;
 import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
@@ -19,6 +20,7 @@ import com.example.HouseGoods.products.exception.CountryNotFoundException;
 import com.example.HouseGoods.products.exception.ProductNotFoundException;
 import com.example.HouseGoods.products.mapper.CategoryMapper;
 import com.example.HouseGoods.products.mapper.CountryMapper;
+import com.example.HouseGoods.products.mapper.ProductMapper;
 import com.example.HouseGoods.products.repository.AttributeRepository;
 import com.example.HouseGoods.products.repository.BrandRepository;
 import com.example.HouseGoods.products.repository.CategoryRepository;
@@ -47,6 +49,7 @@ public class AdminService {
     private final ProductAttributeValueRepository productAttributeValueRepository;
     private final CategoryMapper categoryMapper;
     private final CountryMapper countryMapper;
+    private final ProductMapper productMapper;
 
     public void createCategory(UpdateCreateCategoryRequest request) {
         Optional<Category> existCategory = categoryRepository.findByTitle(request.getTitle());
@@ -351,6 +354,13 @@ public class AdminService {
     public List<CountryResponse> getCountries() {
         return countryRepository.findAll().stream()
                 .map(countryMapper::mappingToCountryResponse)
+                .toList();
+    }
+
+    public List<ProductResponse> getProductBySearch(String searchTerm) {
+        return productRepository.searchByPartialSkuOrName(searchTerm)
+                .stream()
+                .map(productMapper::mappingByProductResponse)
                 .toList();
     }
 }

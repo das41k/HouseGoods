@@ -5,6 +5,7 @@ import com.example.HouseGoods.admin.dto.UpdateCreateBrandRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateCategoryRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateProductRequest;
 import com.example.HouseGoods.products.dto.CountryResponse;
+import com.example.HouseGoods.products.dto.ProductResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -96,5 +97,13 @@ public class AdminController {
     public ResponseEntity<List<CountryResponse>> getCountries() {
         log.debug("GET /api/admin/countries");
         return ResponseEntity.ok(adminService.getCountries());
+    }
+
+    @GetMapping("/products/{searchTerm}")
+    public ResponseEntity<List<ProductResponse>> getProductsBySearch(
+            @PathVariable String searchTerm
+    ) {
+        log.debug("GET /api/admin/products/" + searchTerm);
+        return ResponseEntity.ok(adminService.getProductBySearch(searchTerm));
     }
 }
