@@ -1,5 +1,6 @@
 package com.example.HouseGoods.admin;
 
+import com.example.HouseGoods.admin.dto.AdminDataResponse;
 import com.example.HouseGoods.admin.dto.UpdateCreateBrandRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateCategoryRequest;
 import com.example.HouseGoods.admin.dto.UpdateCreateProductRequest;
@@ -80,5 +81,11 @@ public class AdminController {
         log.debug("DELETE /api/admin/product/" + sku);
         adminService.deleteProduct(sku);
         return ResponseEntity.ok("Товар был успешно удален");
+    }
+
+    @GetMapping
+    public ResponseEntity<AdminDataResponse> getAdminData() {
+        log.debug("GET /api/admin");
+        return ResponseEntity.ok(adminService.getAdminData());
     }
 }
