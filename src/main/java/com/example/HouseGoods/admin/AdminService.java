@@ -6,6 +6,7 @@ import com.example.HouseGoods.admin.exception.CategoryIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductIsAlreadyException;
 import com.example.HouseGoods.admin.exception.ProductsExistsException;
 import com.example.HouseGoods.products.Product;
+import com.example.HouseGoods.products.dto.CountryResponse;
 import com.example.HouseGoods.products.entity.Attribute;
 import com.example.HouseGoods.products.entity.Brand;
 import com.example.HouseGoods.products.entity.Category;
@@ -345,5 +346,11 @@ public class AdminService {
         brandResponse.setImageURl(brand.getImageURl());
         brandResponse.setCountryResponse(countryMapper.mappingToCountryResponse(brand.getCountry()));
         return brandResponse;
+    }
+
+    public List<CountryResponse> getCountries() {
+        return countryRepository.findAll().stream()
+                .map(countryMapper::mappingToCountryResponse)
+                .toList();
     }
 }
