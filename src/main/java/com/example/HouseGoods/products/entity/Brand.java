@@ -1,7 +1,10 @@
 package com.example.HouseGoods.products.entity;
 
+import com.example.HouseGoods.products.Product;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "brands")
@@ -21,4 +24,7 @@ public class Brand {
 
     @Column(name = "image_url", length = 500)
     private String imageURl;
+
+    @OneToMany(mappedBy = "brand")
+    private List<Product> products;
 }

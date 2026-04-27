@@ -6,6 +6,8 @@ import com.example.HouseGoods.products.entity.Category;
 import com.example.HouseGoods.products.entity.Country;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +21,7 @@ public interface ProductRepository extends JpaRepository<Product,Long>,
     List<Product> findByBrand(Brand brand);
     List<Product> findByBrand_Country(Country country);
     List<Product> findBySalePriceIsNotNull();
+
+    @Query("SELECT p FROM Product p WHERE LOWER(p.sku) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR LOWER(p.name) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    List<Product> searchByPartialSkuOrName(@Param("searchTerm") String searchTerm);
 }
